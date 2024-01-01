@@ -1,0 +1,22 @@
+
+.form-outline {
+  position: relative;
+  width: 100%;
+  width: 24rem;
+}
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+  position: relative;
+  bottom: 4rem;
+}
+.card-body {
+    height: 40rem;
+    background-color: rgb(228, 222, 222);
+
+  }
+  .card-body {
+    height: 40rem;
+    background-color: rgb(237 237 237);
+    border-radius: 1rem;
+}
