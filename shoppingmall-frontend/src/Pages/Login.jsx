@@ -1,4 +1,5 @@
 import React from "react";
+import toast from 'react-hot-toast'
 import {
   MDBContainer,
   MDBCol,
@@ -19,7 +20,7 @@ const Login = () => {
   const signIn = () => {
     let isvalid = false;
     if (email === "" || password === "") {
-      alert("Please fill all fields!");
+      toast.error("Please fill all fields!");
     } else {
       if (email === "admin@admin.com" && password === "admin") {
         isvalid = true;
@@ -27,7 +28,7 @@ const Login = () => {
         console.log(data.email);
       } else {
         isvalid = false;
-        alert(" Invalid credential !!");
+        toast.error(" Invalid credential !!");
       }
     }
     if (isvalid) {
@@ -38,7 +39,7 @@ const Login = () => {
   return (
     <MDBContainer fluid className="p-3 my-5 h-custom">
       <MDBRow>
-        <MDBCol col="10" md="6">
+        <MDBCol col="12" md="6">
           <img
             src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
             className="img-fluid "
@@ -46,7 +47,7 @@ const Login = () => {
           />
         </MDBCol>
 
-        <MDBCol col="4" md="6">
+        <MDBCol col="12" md="6">
           <div className="d-flex flex-row align-items-center justify-content-center">
             <p className="lead fw-normal mb-0 me-3">Sign in</p>
           </div>
@@ -90,8 +91,9 @@ const Login = () => {
               Login
             </MDBBtn>
             <p className="small fw-bold mt-2 pt-1 mb-2">
-              Don't have an account? <Link to="/signup">sign up</Link>
+              Don't have an account? <Link to="/signup">Sign Up</Link>
             </p>
+
           </div>
         </MDBCol>
       </MDBRow>

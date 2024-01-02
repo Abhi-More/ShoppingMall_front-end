@@ -1,5 +1,11 @@
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+
 import {
+  MDBDropdown,
+  MDBDropdownMenu,
+  MDBDropdownToggle,
+  MDBDropdownItem,
   MDBBtn,
   MDBContainer,
   MDBRow,
@@ -17,6 +23,7 @@ const Signup = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [retypepass, setretypepass] = useState("");
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
   const signupMe = () => {
     let isvalid = false;
@@ -24,7 +31,7 @@ const Signup = () => {
       (username === "") | (email === "") ||
       (password === "") | (retypepass === "")
     ) {
-      alert("Please fill all fields!");
+      toast.error("Please fill all fields!");
     } else {
       if (password !== retypepass) {
         alert("Password does not match Retype Password!", password, retypepass);
@@ -47,14 +54,26 @@ const Signup = () => {
         <MDBCard className="text-black m-5" style={{ borderRadius: "25px" }}>
           <MDBCardBody>
             <MDBRow>
+
               <MDBCol
                 md="10"
                 lg="6"
                 className="order-2 order-lg-1 d-flex flex-column align-items-center"
               >
-                <p classNAme="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+                <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
                   Sign up
                 </p>
+                <div className="d-flex flex-row align-items-center mb-4 ">
+                  <MDBDropdown onClose={(e)=>{setRole(e.target.innerHTML)}}>
+                    <MDBDropdownToggle>Select Role</MDBDropdownToggle>
+                    <MDBDropdownMenu>
+                      <MDBDropdownItem link>Owner</MDBDropdownItem>
+                      <MDBDropdownItem link>Admin</MDBDropdownItem>
+                      <MDBDropdownItem link>Customer</MDBDropdownItem>
+                      <MDBDropdownItem link>Employee</MDBDropdownItem>
+                    </MDBDropdownMenu>
+                  </MDBDropdown>
+                </div>
                 <div className="d-flex flex-row align-items-center mb-4 ">
                   <MDBIcon fas icon="user me-3" size="lg" />
                   <MDBInput
@@ -98,7 +117,7 @@ const Signup = () => {
                   <MDBIcon fas icon="key me-3" size="lg" />
                   <MDBInput
                     className="rounded-4 hover-shadow"
-                    label="Repeat your password"
+                    label="Repeat Your Password"
                     id="form4"
                     type="password"
                     value={retypepass}
@@ -110,7 +129,7 @@ const Signup = () => {
                 <MDBBtn className="mb-4" size="lg" onClick={signupMe}>
                   Register
                 </MDBBtn>{" "}
-                already have an account ?{" "}
+                Already have an account ?{" "}
                 <Link to="/">
                   <b>Login</b>
                 </Link>

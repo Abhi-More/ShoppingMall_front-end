@@ -8,11 +8,7 @@
 .h-custom {
   height: calc(100% - 73px);
 }
-@media (max-width: 450px) {
-  .h-custom {
-    height: 100%;
-  }
-}
+
 
 .row {
   padding: 6rem 10rem 3rem 10rem;
@@ -24,7 +20,23 @@
 
 .container-fluid.p-3.my-5.h-custom {
   border-radius: 1rem;
-  width: 88rem;
+  /* width: 88rem; */
   border: 0rem solid #ededed;
   background-color: #ededed;
+}
+
+@media (max-width: 450px) {
+  .h-custom {
+    height: 100%;
+  }
+  .row {
+    padding: 1rem;
+  }
+
+  .container-fluid.p-3.my-5.h-custom {
+    width: 100%;
+  }
+  .MDBInput {
+    min-width: 200px;
+  }
 }
