@@ -34,7 +34,8 @@ const Signup = () => {
       toast.error("Please fill all fields!");
     } else {
       if (password !== retypepass) {
-        alert("Password does not match Retype Password!", password, retypepass);
+        // alert("Password does not match Retype Password!", password, retypepass);
+        toast.error("Password does not match Retype Password!");
         isvalid = false;
       } else {
         let data = JSON.stringify({ username, email, password });
@@ -44,7 +45,8 @@ const Signup = () => {
     }
     console.log(isvalid);
     if (isvalid) {
-      alert("signup succefully login please !!");
+      // alert("signup succefully login please !!");
+      toast.success("signup succefully login please !!");
       navigate("/");
     }
   };
@@ -54,7 +56,6 @@ const Signup = () => {
         <MDBCard className="text-black m-5" style={{ borderRadius: "25px" }}>
           <MDBCardBody>
             <MDBRow>
-
               <MDBCol
                 md="10"
                 lg="6"
@@ -64,7 +65,11 @@ const Signup = () => {
                   Sign up
                 </p>
                 <div className="d-flex flex-row align-items-center mb-4 ">
-                  <MDBDropdown onClose={(e)=>{setRole(e.target.innerHTML)}}>
+                  <MDBDropdown
+                    onClose={(e) => {
+                      setRole(e.target.innerHTML);
+                    }}
+                  >
                     <MDBDropdownToggle>Select Role</MDBDropdownToggle>
                     <MDBDropdownMenu>
                       <MDBDropdownItem link>Owner</MDBDropdownItem>

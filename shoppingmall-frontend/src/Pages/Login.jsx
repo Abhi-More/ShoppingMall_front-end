@@ -1,5 +1,5 @@
 import React from "react";
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
 import {
   MDBContainer,
   MDBCol,
@@ -32,7 +32,8 @@ const Login = () => {
       }
     }
     if (isvalid) {
-      alert("login succefully !!");
+      // alert("login succefully !!");
+      toast.success(" login succefully !!");
       navigate("/profilePage");
     }
   };
@@ -93,7 +94,6 @@ const Login = () => {
             <p className="small fw-bold mt-2 pt-1 mb-2">
               Don't have an account? <Link to="/signup">Sign Up</Link>
             </p>
-
           </div>
         </MDBCol>
       </MDBRow>
