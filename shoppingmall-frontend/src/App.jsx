@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Toaster } from 'react-hot-toast'
 import AppContext from "./ContextApi/CreateContextApi";
-import Signup from "./Pages/Signup";
-import Login from "./Pages/Login";
 import ProfilePage from "./Pages/ProfilePage";
+import SignupDemo from "./Pages/SignupDemo";
+import LoginDemo from "./Pages/LoginDemo";
 
 function App() {
   const data = useContext(AppContext);
@@ -13,9 +13,9 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route exact path="/" element={<Login />} />
-          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/" element={<LoginDemo />} />
           <Route exact path="/profilePage" element={<ProfilePage />} />
+          <Route exact path="/signup" element={<SignupDemo />} />
         </Routes>
       </Router>
       <Toaster/>
