@@ -1,7 +1,50 @@
 * {
   margin: 0;
+  font-family: 'Poppins';
+}
+
+
+/* poppins-300 - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/poppins/poppins-v5-latin-300.eot");
+  /* IE9 Compat Modes */
+  src: local("Poppins Light"), local("Poppins-Light"), url("../fonts/poppins/poppins-v5-latin-300.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-300.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-300.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-300.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-300.svg#Poppins") format("svg");
+  /* Legacy iOS */
 }
 
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+.cat-btn {
+  padding: 40px 0px;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.cat-btn:hover {
+  background-color: #434343;
+  color: white;
+}
+
+.cat-btn1 {
+  padding: 19px 8.5px;
+  font-size: 15px;
+  /* line-height: 24px; */
+  font-family: Poppins;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  color: #212529;
+  background-color: #f8f9fa;
+  border:solid 1px black
+}
+
+.cat-btn1:hover {
+  background-color: #434343;
+  color: white;
 }

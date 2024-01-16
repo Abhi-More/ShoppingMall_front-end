@@ -3,9 +3,19 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Toaster } from 'react-hot-toast'
 import AppContext from "./ContextApi/CreateContextApi";
-import ProfilePage from "./Pages/ProfilePage";
+// import ProfilePage from "./Pages/ProfilePage";
 import SignupDemo from "./Pages/SignupDemo";
 import LoginDemo from "./Pages/LoginDemo";
+import About from "./Pages/Footer/About";
+import Contact from "./Pages/Footer/Contact";
+import Policy from "./Pages/Footer/Policy";
+import PageNotFound from "./Pages/PageNotFound";
+import HomePage from "./Pages/HomePage";
+import Men from "./Pages/Categories/Men";
+import Women from "./Pages/Categories/Women";
+import Electronics from "./Pages/Categories/Electronics";
+import Accessories from "./Pages/Categories/Accessories";
+import CartPage from "./Pages/CartPage";
 
 function App() {
   const data = useContext(AppContext);
@@ -14,11 +24,20 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<LoginDemo />} />
-          <Route exact path="/profilePage" element={<ProfilePage />} />
+          <Route exact path="/homepage" element={<HomePage />} />
           <Route exact path="/signup" element={<SignupDemo />} />
+          <Route path='/cart' element={<CartPage />} />
+          <Route path="/men" element={<Men />} />
+          <Route path="/women" element={<Women />} />
+          <Route path="/electronics" element={<Electronics />} />
+          <Route path="/accessories" element={<Accessories />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/policy' element={<Policy />} />
+          <Route path='/*' element={<PageNotFound />} />
         </Routes>
       </Router>
-      <Toaster/>
+      <Toaster />
     </>
   );
 }

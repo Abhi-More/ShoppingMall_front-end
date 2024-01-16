@@ -27,7 +27,7 @@ const LoginDemo = () => {
         if (isvalid) {
             // alert("login succefully !!");
             toast.success(" login succefully !!");
-            navigate("/profilePage");
+            navigate("/homepage");
         }
     };
     return (
