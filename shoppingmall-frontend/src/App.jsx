@@ -16,6 +16,8 @@ import Women from "./Pages/Categories/Women";
 import Electronics from "./Pages/Categories/Electronics";
 import Accessories from "./Pages/Categories/Accessories";
 import CartPage from "./Pages/CartPage";
+import EmployeeDetails from "./Pages/EmployeeDetails";
+import ProfilePage from "./Pages/ProfilePage";
 
 function App() {
   const data = useContext(AppContext);
@@ -35,6 +37,8 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/policy' element={<Policy />} />
           <Route path='/*' element={<PageNotFound />} />
+          <Route path='/employees' element={<EmployeeDetails />} />
+          <Route path='/profile' element={<ProfilePage />} />
         </Routes>
       </Router>
       <Toaster />

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Layout from "../Layout/Layout";
 // import { Delete as DeleteIcon, Edit as EditIcon } from "@material-ui/icons";
 // import { IconButton } from "@material-ui/core";
 
@@ -82,10 +83,11 @@ const EmployeeDetails = () => {
   };
 
   return (
-    <>
+   <>
+   <Layout>
       <center>
         {" "}
-        <table className="container w-75 mx-5 table table-hover">
+        <table className="container w-75 mx-5 table table-hover mt-5">
           <thead>
             <tr>
               <th scope="col"></th>
@@ -302,8 +304,10 @@ const EmployeeDetails = () => {
           </div>
         </div>
       </div>
+      </Layout>
     </>
   );
+ 
 };
 
 export default EmployeeDetails;

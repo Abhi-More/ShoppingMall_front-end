@@ -75,7 +75,7 @@ const Header = () => {
                                 </NavLink>
                                 <ul className="dropdown-menu">
                                     {/* need to find user and redirect to resp. profile using id */}
-                                    <li><NavLink to={`/profile/user`} className="dropdown-item" >Dashboard</NavLink></li>
+                                    <li><NavLink to={`/profile`} className="dropdown-item" >Dashboard</NavLink></li>
                                     <li><NavLink onClick={handleLogout} to="/login" className="dropdown-item">Logout</NavLink></li>
                                 </ul>
                             </li>
