@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Toaster } from 'react-hot-toast'
@@ -6,7 +6,6 @@ import AppContext from "./ContextApi/CreateContextApi";
 // import ProfilePage from "./Pages/ProfilePage";
 import SignupDemo from "./Pages/SignupDemo";
 import LoginDemo from "./Pages/LoginDemo";
-<<<<<<< Updated upstream
 import About from "./Pages/Footer/About";
 import Contact from "./Pages/Footer/Contact";
 import Policy from "./Pages/Footer/Policy";
@@ -17,10 +16,6 @@ import Women from "./Pages/Categories/Women";
 import Electronics from "./Pages/Categories/Electronics";
 import Accessories from "./Pages/Categories/Accessories";
 import CartPage from "./Pages/CartPage";
-=======
-import Home from "./Pages/Home";
-
->>>>>>> Stashed changes
 
 function App() {
   const data = useContext(AppContext);
@@ -29,12 +24,7 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<LoginDemo />} />
-<<<<<<< Updated upstream
           <Route exact path="/homepage" element={<HomePage />} />
-=======
-          <Route exact path="/Home" element={<Home />} />
-          <Route exact path="/profilePage" element={<ProfilePage />} />
->>>>>>> Stashed changes
           <Route exact path="/signup" element={<SignupDemo />} />
           <Route path='/cart' element={<CartPage />} />
           <Route path="/men" element={<Men />} />
