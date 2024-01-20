@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from "react-hot-toast";
 import AppContext from "./ContextApi/CreateContextApi";
 import ProfilePage from "./Pages/ProfilePage";
 import SignupDemo from "./Pages/SignupDemo";
@@ -18,6 +18,8 @@ import Accessories from "./Pages/Categories/Accessories";
 import CartPage from "./Pages/CartPage";
 import EmployeeDetails from "./Pages/EmployeeDetails";
 import ManageProduct from "./Pages/ManageProduct";
+import AddEmployee from "./Pages/AddEmployee";
+import AddProduct from "./Pages/AddProduct";
 
 function App() {
   const data = useContext(AppContext);
@@ -28,18 +30,20 @@ function App() {
           <Route exact path="/" element={<LoginDemo />} />
           <Route exact path="/homepage" element={<HomePage />} />
           <Route exact path="/signup" element={<SignupDemo />} />
-          <Route path='/cart' element={<CartPage />} />
-          <Route path='/employee' element={<EmployeeDetails />} />
-          <Route path='/profile' element={<ProfilePage />} />
-          <Route path='/product' element={<ManageProduct />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/employee" element={<EmployeeDetails />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/product" element={<ManageProduct />} />
+          <Route path="/addEmployee" element={<AddEmployee />} />
+          <Route path="/addProduct" element={<AddProduct />} />
           <Route path="/men" element={<Men />} />
           <Route path="/women" element={<Women />} />
           <Route path="/electronics" element={<Electronics />} />
           <Route path="/accessories" element={<Accessories />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/contact' element={<Contact />} />
-          <Route path='/policy' element={<Policy />} />
-          <Route path='/*' element={<PageNotFound />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/policy" element={<Policy />} />
+          <Route path="/*" element={<PageNotFound />} />
         </Routes>
       </Router>
       <Toaster />
