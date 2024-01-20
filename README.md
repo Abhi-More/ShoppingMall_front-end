@@ -54,8 +54,8 @@ Before you begin, ensure you have the following installed on your machine:
     ```bash
     npm run Build
 
-### Contributing
-## Contributors
+## Contributing
+### Contributors
 
 - [Ashutosh Khairnar](https://github.com/Ashutoshk2002) 
 - [Saish Thorat](https://github.com/git-saish-18)
@@ -63,8 +63,8 @@ Before you begin, ensure you have the following installed on your machine:
 - [Abhishek More](https://github.com/Abhi-More)
 - [Darshan Desale](https://github.com/darshandesale)
 
-### Licenses
-## License
+## Licenses
+### License
 
     This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
