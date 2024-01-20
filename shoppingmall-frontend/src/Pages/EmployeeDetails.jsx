@@ -1,50 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Layout from "../Layout/Layout";
+import axios from "axios";
 // import { Delete as DeleteIcon, Edit as EditIcon } from "@material-ui/icons";
 // import { IconButton } from "@material-ui/core";
 
 const EmployeeDetails = () => {
-  const [employees, setEmployees] = useState([
-    {
-      id: 1,
-      name: "Saish Thorat",
-      email: "saish@gamil.com",
-      phNumber: "8459662740",
-      position: "Software Engineer",
-      address: "Nashik,Maharashtra,India",
-    },
-    {
-      id: 2,
-      name: "Onkar Thorat",
-      email: "onkar@gmail.com",
-      phNumber: "7620428833",
-      position: "Product Manager",
-      address: "Nashik,Maharashtra,India",
-    },
-    {
-      id: 3,
-      name: "Onkar Thorat",
-      email: "onkar@gmail.com",
-      phNumber: "7620428833",
-      position: "Product Manager",
-      address: "Nashik,Maharashtra,India",
-    },
-    {
-      id: 4,
-      name: "Onkar Thorat",
-      email: "onkar@gmail.com",
-      phNumber: "7620428833",
-      position: "Product Manager",
-      address: "Nashik,Maharashtra,India",
-    },
-    {
-      id: 5,
-      name: "Onkar Thorat",
-      email: "onkar@gmail.com",
-      phNumber: "7620428833",
-      position: "Product Manager",
-      address: "Shirdi,Maharashtra,India",
-    },
-  ]);
+  const [employees, setEmployees] = useState([]);
+    
+      const getEmployee=async()=>{
+        const data= await axios.get(`http://localhost:8080/employee/all`)
+        setEmployees(data.data)
+      }
+
+      useEffect(()=>{
+        getEmployee()
+        
+      },[])
 
   const [updateUserDetails, setUpdateUserDetails] = useState({
     firstName: "",
@@ -83,31 +54,39 @@ const EmployeeDetails = () => {
 
   return (
     <>
-      <center>
+    <Layout>
+      <center className="pt-3">
         {" "}
-        <table className="container w-75 mx-5 table table-hover">
+        <button className="my-3 btn btn-outline-success" onClick={() => AddNewEmp()}>
+          Add Employee
+        </button>
+        <table className="container w-75 mx-5 table table-hover my-3">
           <thead>
             <tr>
               <th scope="col"></th>
               <th scope="col">FullName</th>
               <th scope="col">Email</th>
               <th scope="col">Phone Number</th>
-              <th scope="col">Position</th>
+              <th scope="col">Designation</th>
               <th scope="col">Address</th>
               <th scope="col">Edit</th>
               <th scope="col">Remove</th>
             </tr>
           </thead>
           <tbody>
+          {/* {console.log(employees.data)} */}
             {employees.map((ele) => {
               return (
-                <tr key={ele.id}>
-                  <th scope="row">{ele.id}</th>
+                <tr key={ele.empId}>
+                {console.log(ele)}
+                  <th scope="row">{ele.empId}</th>
                   <td>{ele.name}</td>
                   <td>{ele.email}</td>
-                  <td>{ele.phNumber}</td>
-                  <td>{ele.position}</td>
+                  <td>{ele.contactNo}</td>
+                  <td>{ele.designation}</td>
+                  {/* <td>{ele.dataOfJoining}</td> */}
                   <td>{ele.address}</td>
+                  {/* <td>{ele.salary}</td> */}
                   <td>
                     <button
                       type="button"
@@ -115,7 +94,7 @@ const EmployeeDetails = () => {
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                       onClick={() => {
-                        handleEdit(ele.id);
+                        handleEdit(ele.empId);
                       }}
                     >
                       Edit
@@ -125,7 +104,7 @@ const EmployeeDetails = () => {
                     {" "}
                     <button
                       className="btn btn-outline-danger"
-                      onClick={() => handleDelete(ele.id)}
+                      onClick={() => handleDelete(ele.empId)}
                     >
                       Remove
                     </button>
@@ -134,9 +113,7 @@ const EmployeeDetails = () => {
               );
             })}
           </tbody>
-        <button className="my-3 btn btn-outline-success" onClick={() => AddNewEmp()}>
-          Add
-        </button>
+        
         </table>
       </center>
       <div
@@ -302,6 +279,7 @@ const EmployeeDetails = () => {
           </div>
         </div>
       </div>
+      </Layout>
     </>
   );
 };

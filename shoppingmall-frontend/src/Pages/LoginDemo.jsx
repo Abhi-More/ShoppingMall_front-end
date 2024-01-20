@@ -10,7 +10,8 @@ const LoginDemo = () => {
     const [password, Setpassword] = useState("");
     const navigate = useNavigate();
 
-    const signIn = () => {
+    const signIn = (e) => {
+        e.preventDefault();
         let isvalid = false;
         if (email === "" || password === "") {
             toast.error("Please fill all fields!");
@@ -26,8 +27,10 @@ const LoginDemo = () => {
         }
         if (isvalid) {
             // alert("login succefully !!");
-            toast.success(" login succefully !!");
+            toast.success(" login successfully !!");
             navigate("/homepage");
+        }else{
+            navigate('/')
         }
     };
     return (
@@ -43,7 +46,7 @@ const LoginDemo = () => {
                                 <Link to='/signup' className="signup-image-link">Don't have an account?</Link>
                             </div>
                             <div className="signin-form">
-                                <h2 className="form-title">Sign up</h2>
+                                <h2 className="form-title">Login</h2>
                                 <form method="POST" className="register-form" id="login-form">
                                     <div className="form-group">
                                         <label htmlFor="your_name"><i className="zmdi zmdi-account material-icons-name" /></label>

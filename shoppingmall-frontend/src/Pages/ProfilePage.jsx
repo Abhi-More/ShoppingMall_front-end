@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "../assets/css/profilePage.css";
 import { useState } from "react";
+import Layout from "../Layout/Layout";
 const ProfilePage = () => {
   const [name] = useState("Er.saish Thorat");
   const [userDetails, setUserDetails] = useState({
@@ -51,14 +52,15 @@ const ProfilePage = () => {
   };
   return (
     <>
+    <Layout>
       <div>
-        <div className="container">
+        <div className="container mt-3">
           <div className="main-body">
             {/* Breadcrumb */}
             <nav aria-label="breadcrumb" className="main-breadcrumb">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <Link to="/Home">Home</Link>
+                  <Link to="/homepage">Home</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   User Profile
@@ -396,6 +398,7 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+      </Layout>
     </>
   );
 };

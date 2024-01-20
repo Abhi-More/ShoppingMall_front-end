@@ -49,9 +49,7 @@ const SignupDemo = () => {
 
                                 <form method="POST" className="register-form" id="register-form">
                                     <div className="dropdown mb-3" >
-                                        <button className="btn btn-primary dropdown-toggle" style={{ opacity: 0.8 }} type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Select Role
-                                        </button>
+                                        
                                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <button className="dropdown-item" onClick={() => setRole('employee')}>Employee</button>
                                             <button className="dropdown-item" onClick={() => setRole('customer')}>Customer</button>

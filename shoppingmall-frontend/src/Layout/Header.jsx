@@ -18,6 +18,9 @@ const Header = () => {
     const [cart] = useCart();
     //   const categories = useCategory();
     const navigate = useNavigate()
+
+    const userType="admin";
+
     const handleLogout = () => {
         // Logic
         navigate('/')
@@ -33,15 +36,16 @@ const Header = () => {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
                         <Link to="/homepage" className="navbar-brand"><IoSchool /> ShoppingMall</Link>
-                        <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <ul className="navbar-nav ms-auto mb-2 mb-lg-0 mx-4">
                             {/* <SearchInput /> */}
-                            <li className="nav-item">
+                            <li className="nav-item mx-1">
                                 <NavLink to="/homepage" className="nav-link btn-2">Home</NavLink>
                             </li>
-                            {/* <li className="nav-item">
-                <NavLink to="/xerox" className="nav-link">Photocopy</NavLink>
-              </li> */}
-                            <li className="nav-item dropdown">
+
+                            
+
+                            
+                            <li className="nav-item dropdown mx-1">
                                 <Link
                                     className="nav-link dropdown-toggle"
                                     to=''
@@ -51,11 +55,15 @@ const Header = () => {
                                 <ul className='dropdown-menu'>
                                     <li>
                                         <Link className='dropdown-item'
-                                            to='/men'> Men's Clothing</Link>
+                                            to='/homepage'> All Products</Link>
                                     </li>
                                     <li>
                                         <Link className='dropdown-item'
-                                            to='/women'>Women's Clothing</Link>
+                                            to='/men'> Men</Link>
+                                    </li>
+                                    <li>
+                                        <Link className='dropdown-item'
+                                            to='/women'>Women</Link>
                                     </li>
                                     <li>
                                         <Link className='dropdown-item'
@@ -69,19 +77,20 @@ const Header = () => {
                                 </ul>
                             </li>
 
-                            <li className="nav-item dropdown">
+                            <li className="nav-item dropdown mx-1">
                                 <NavLink className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     User
                                 </NavLink>
                                 <ul className="dropdown-menu">
-                                    {/* need to find user and redirect to resp. profile using id */}
-                                    <li><NavLink to={`/profile/user`} className="dropdown-item" >Dashboard</NavLink></li>
-                                    <li><NavLink onClick={handleLogout} to="/login" className="dropdown-item">Logout</NavLink></li>
+                                    <li><NavLink to={`/profile`} className="dropdown-item" >Profile</NavLink></li>
+                                    <li><NavLink to={`/employee`} className={`dropdown-item ${userType==="admin"? "d-block":"d-none"}`}  >Manage Employees</NavLink></li>
+                                    <li><NavLink to={`/product`} className={`dropdown-item ${userType==="admin"? "d-block":"d-none"}`}>Manage Products</NavLink></li>
+                                    <li><NavLink onClick={handleLogout} to="/" className="dropdown-item">Logout</NavLink></li>
                                 </ul>
                             </li>
 
 
-                            <li className="nav-item p-1">
+                            <li className="nav-item p-1 mx-1">
                                 <Badge count={cart?.length} showZero>
                                     <NavLink to="/cart" className="nav-link"><span style={{ fontFamily: 'Poppins', fontSize: '17px' }}>Cart</span></NavLink>
                                 </Badge>

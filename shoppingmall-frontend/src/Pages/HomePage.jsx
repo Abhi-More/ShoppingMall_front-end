@@ -90,21 +90,13 @@ const HomePage = () => {
                             <>
                                 <div className="card m-4 " style={{ width: '18rem' }} >
                                     <img src={`http://localhost:8080/product/${p.id}/image`}
-                                    onClick={() => showModal(p.id)} 
-                                     className="card-img-top" alt={p.name} height={"300px"} />
-                                    <div className="card-body">
+                                        onClick={() => showModal(p.id)}
+                                        className="card-img-top" alt={p.name} height={"300px"} />
+                                    <div className="card-body text-center">
                                         <h5 className="card-title">{p.name}</h5>
-                                        <p className="card-text">{p.category}</p>
+                                        {/* <p className="card-text">{p.category}</p> */}
                                         <p className="card-text">Rs.{p.price}</p>
-                                        
-                                        <button className='btn btn-light ms-1 btn-outline-dark m-1'
 
-
-                                            onClick={() => {
-                                                setCart([...cart, p])
-                                                localStorage.setItem('cart', JSON.stringify([...cart, p]))
-                                                toast.success("Item Added to Cart")
-                                            }}>Add to Cart</button>
 
                                         <Modal
                                             title="Product Detail"
@@ -117,7 +109,7 @@ const HomePage = () => {
                                         >
                                             {/* <ProductDetails productId={p.id}/> */}
                                             {/* -------------------------------------------------- */}
-                                            
+
                                             <div className="row container mt-3">
                                                 <div className="col-md-6">
                                                     <img src={`http://localhost:8080/product/${selectedProduct}/image`}

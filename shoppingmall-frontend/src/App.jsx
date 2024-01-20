@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Toaster } from 'react-hot-toast'
 import AppContext from "./ContextApi/CreateContextApi";
-// import ProfilePage from "./Pages/ProfilePage";
+import ProfilePage from "./Pages/ProfilePage";
 import SignupDemo from "./Pages/SignupDemo";
 import LoginDemo from "./Pages/LoginDemo";
 import About from "./Pages/Footer/About";
@@ -16,6 +16,8 @@ import Women from "./Pages/Categories/Women";
 import Electronics from "./Pages/Categories/Electronics";
 import Accessories from "./Pages/Categories/Accessories";
 import CartPage from "./Pages/CartPage";
+import EmployeeDetails from "./Pages/EmployeeDetails";
+import ManageProduct from "./Pages/ManageProduct";
 
 function App() {
   const data = useContext(AppContext);
@@ -27,6 +29,9 @@ function App() {
           <Route exact path="/homepage" element={<HomePage />} />
           <Route exact path="/signup" element={<SignupDemo />} />
           <Route path='/cart' element={<CartPage />} />
+          <Route path='/employee' element={<EmployeeDetails />} />
+          <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/product' element={<ManageProduct />} />
           <Route path="/men" element={<Men />} />
           <Route path="/women" element={<Women />} />
           <Route path="/electronics" element={<Electronics />} />
