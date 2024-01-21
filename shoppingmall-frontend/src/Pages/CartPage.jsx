@@ -1,43 +1,49 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Layout from "../Layout/Layout";
-import { useCart } from "../ContextApi/Cart";
-// import { useAuth } from '../context/auth';
-import { useNavigate } from "react-router-dom";
+import { useCartCount } from "../ContextApi/Cart";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const CartPage = () => {
-  const [cart, setCart] = useCart();
-  // const [auth, setAuth] = useAuth();
-  const navigate = useNavigate();
-  // const [clientToken, setClientToken] = useState("");
-  // const [instance, setinstance] = useState("");
+  const [cartCount, setcartCount] = useCartCount();
+  const [cart, setCart] = useState([]);
+  const userId = 1;
+  const getPreviousPendingOrder = async () => {
+    const { data } = await axios.get(`http://192.168.1.3:8080/order/${userId}`);
+    console.log("ha data card page", data);
+    setCart(data);
+  };
+  useEffect(() => {
+    getPreviousPendingOrder();
+  }, []);
 
   //total price
   const totalPrice = () => {
     try {
+      let count = 0;
       let total = 0;
-      cart?.map((item) => {
-        total = total + item.price;
+      cart?.map((item, index) => {
+        count = index + 1;
+        total = total + item.product.price;
+        console.log();
       });
-      return total;
-      //     maximumFractionDigits: 2,
-      //     style: 'currency',
-      //     currency: 'INR'
-      // });
+      setcartCount(count);
+      console.log("cart count", cartCount);
+      console.log(total);
+      return Math.round(total);
     } catch (error) {
       console.log(error);
     }
   };
 
   //remove from cart
-  const removeCartItem = (pid) => {
+  const removeCartItem = async (orderId) => {
     try {
-      let myCart = [...cart];
-      let index = myCart.findIndex((item) => item.id === pid);
-      myCart.splice(index, 1);
-      setCart(myCart);
-      localStorage.setItem("cart", JSON.stringify(myCart));
+      await axios.delete(`http://192.168.1.3:8080/order/delete/${orderId}`);
+      toast.success("order removed successfully!");
+      getPreviousPendingOrder();
+
+      localStorage.setItem("cartCount", setcartCount(cartCount - 1));
     } catch (error) {
       console.log(error);
     }
@@ -45,9 +51,8 @@ const CartPage = () => {
 
   const handlePayment = async () => {
     try {
-      localStorage.removeItem("cart");
-      setCart([]);
-      navigate("/homepage");
+      await axios.put(`http://192.168.1.3:8080/order/${userId}`);
+      console.log("payment");
       toast.success("Payment Completed Successfully");
     } catch (error) {
       console.log(error);
@@ -75,20 +80,19 @@ const CartPage = () => {
                 <div className="row mb-2 p-3 card flex-row" key={p.id}>
                   <div className="col-md-4 d-flex align-items-center justify-content-center">
                     <img
-                      src={`http://192.168.1.3:8080/product/${p.id}/image`}
+                      src={`http://192.168.1.3:8080/product/${p.product.id}/image`}
                       className="img-fluid"
-                      alt={p.name}
+                      alt={p.product.name}
                       width={"100px"}
                       height={"100px"}
                     />
                   </div>
                   <div className="col-md-8">
-                    <p>{p.name}</p>
-                    <p>{p.category}</p>
-                    <p>{p.price}</p>
+                    <p>{p.product.name}</p>
+                    <p>${p.product.price}</p>
                     <button
                       className="btn btn-danger"
-                      onClick={() => removeCartItem(p.id)}
+                      onClick={() => removeCartItem(p.order.orderId)}
                     >
                       Remove Item
                     </button>

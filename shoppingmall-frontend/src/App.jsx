@@ -20,6 +20,7 @@ import EmployeeDetails from "./Pages/EmployeeDetails";
 import ManageProduct from "./Pages/ManageProduct";
 import AddEmployee from "./Pages/AddEmployee";
 import AddProduct from "./Pages/AddProduct";
+import UserOrders from "./Pages/UserOrders";
 
 function App() {
   const data = useContext(AppContext);
@@ -35,7 +36,8 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/product" element={<ManageProduct />} />
           <Route path="/addEmployee" element={<AddEmployee />} />
-          <Route path="/addProduct" element={<AddProduct />} />
+          <Route path="/addproduct" element={<AddProduct />} />
+          <Route path="/userOrder" element={<UserOrders />} />
           <Route path="/men" element={<Men />} />
           <Route path="/women" element={<Women />} />
           <Route path="/electronics" element={<Electronics />} />

@@ -13,7 +13,7 @@ const ProfilePage = () => {
   });
   const userId = 1;
   const getSingleUser = async () => {
-    const data = await axios.get(`http://192.168.1.4:8080/employee/${userId}`, {
+    const data = await axios.get(`http://192.168.1.3:8080/employee/${userId}`, {
       withCredentials: false,
     });
     setEmpId(data.data.empId);
@@ -68,10 +68,9 @@ const ProfilePage = () => {
         updateUserDetails.country,
     };
     const updateUser = await axios.put(
-      `http://192.168.1.4:8080/employee/${userId}`,
+      `http://192.168.1.3:8080/employee/${userId}`,
       newUpdateUser
     );
-    console.log("res", updateUser);
     getSingleUser();
   };
 

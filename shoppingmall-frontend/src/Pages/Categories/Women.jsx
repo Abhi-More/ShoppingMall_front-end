@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { useCart } from "../../ContextApi/Cart";
+import { useCartCount } from "../../ContextApi/Cart";
 import { Button, Modal } from "antd";
 const Women = () => {
-  const navigate = useNavigate();
-  const [cart, setCart] = useCart();
+  const [CartCount, setCartCount] = useCartCount();
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -56,10 +54,6 @@ const Women = () => {
     getAllProducts();
   }, []);
 
-  // const params = useParams();
-  // const [cart, setCart] = useCart();
-  const [product, setProduct] = useState([]);
-
   //get product
   const getProduct = async (productId) => {
     try {
@@ -69,14 +63,41 @@ const Women = () => {
 
       console.log(data);
       setProductDetail(data);
-      // setProduct(data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const orders = {
+    userId: 1,
+    productId: 5,
+    status: "PENDING",
+    timeAndDate: "",
+  };
+
+  const atTocart = async () => {
+    const { data } = await axios
+      .post(`http://192.168.1.3:8080/order/add`, {
+        ...orders,
+        productId: ProductDetail.id,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setCartCount(CartCount + 1);
+          localStorage.setItem("cartCount", CartCount);
+          toast.success("Item Added to Cart");
+        } else {
+          toast.error("Failed to Add ");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     getProduct();
-  }, []);
+  }, [CartCount]);
 
   return (
     <Layout title={"ShoppingMall- Shop Now"}>
@@ -103,20 +124,6 @@ const Women = () => {
                     <p className="card-text">{p.category}</p>
                     <p className="card-text">Rs.{p.price}</p>
 
-                    <button
-                      className="btn btn-light ms-1 btn-outline-dark m-1"
-                      onClick={() => {
-                        setCart([...cart, p]);
-                        localStorage.setItem(
-                          "cart",
-                          JSON.stringify([...cart, p])
-                        );
-                        toast.success("Item Added to Cart");
-                      }}
-                    >
-                      Add to Cart
-                    </button>
-
                     <Modal
                       title="Product Detail"
                       open={open}
@@ -125,9 +132,6 @@ const Women = () => {
                       onCancel={handleCancel}
                       width={1000}
                     >
-                      {/* <ProductDetails productId={p.id}/> */}
-                      {/* -------------------------------------------------- */}
-
                       <div className="row container mt-3">
                         <div className="col-md-6">
                           <img
@@ -148,14 +152,7 @@ const Women = () => {
                               <h6>Category :{ProductDetail?.category}</h6>
                               <button
                                 className="btn btn-light ms-1 btn-outline-dark m-1"
-                                onClick={() => {
-                                  setCart([...cart, ProductDetail]);
-                                  localStorage.setItem(
-                                    "cart",
-                                    JSON.stringify([...cart, ProductDetail])
-                                  );
-                                  toast.success("Item Added to Cart");
-                                }}
+                                onClick={atTocart}
                                 style={{ width: "100%" }}
                               >
                                 Add to Cart
@@ -164,7 +161,6 @@ const Women = () => {
                           </div>
                         </div>
                       </div>
-                      {/* -------------------------------------------------- */}
                     </Modal>
                   </div>
                 </div>
@@ -173,7 +169,6 @@ const Women = () => {
           })}
         </div>
       </div>
-      {/* </div> */}
     </Layout>
   );
 };

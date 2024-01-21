@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { json, useNavigate } from "react-router-dom";
-import { useCart } from "../ContextApi/Cart";
-import { Button, Modal } from "antd";
+import { useCartCount } from "../ContextApi/Cart";
+import { Modal } from "antd";
 const HomePage = () => {
-  const navigate = useNavigate();
-  const [cart, setCart] = useCart();
+  const [CartCount, setCartCount] = useCartCount();
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,7 +16,6 @@ const HomePage = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState("Content of the modal");
   const showModal = (productId) => {
-    console.log(productId);
     setSelectedProduct(productId);
     setOpen(true);
     getProduct(productId);
@@ -27,6 +24,7 @@ const HomePage = () => {
     setModalText("The modal will be closed after two seconds");
     setConfirmLoading(true);
     setTimeout(() => {
+      console.log("order Placed");
       setOpen(false);
       setConfirmLoading(false);
     }, 1000);
@@ -44,7 +42,6 @@ const HomePage = () => {
         { withCredentials: false }
       );
       setLoading(false);
-      // console.log(data);
       setProducts(data);
     } catch (error) {
       setLoading(false);
@@ -56,36 +53,51 @@ const HomePage = () => {
     getAllProducts();
   }, []);
 
-  // const params = useParams();
-  // const [cart, setCart] = useCart();
-  const [product, setProduct] = useState([]);
-
   //get product
   const getProduct = async (productId) => {
     try {
-      const { data } = await axios.post(
-        `http://192.168.1.3:8080/product/${productId}`,
+      const { data } = await axios.get(
+        `http://192.168.1.3:8080/product/${productId}`
       );
 
-      console.log(data);
       setProductDetail(data);
-      // setProduct(data);
     } catch (error) {
       console.log(error);
     }
   };
+  const orders = {
+    userId: 1,
+    productId: 5,
+    status: "PENDING",
+    timeAndDate: "",
+  };
+
+  const addToCard = async () => {
+    const { data } = await axios
+      .post(`http://192.168.1.3:8080/order/add`, {
+        ...orders,
+        productId: ProductDetail.id,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setCartCount(CartCount + 1);
+          localStorage.setItem("cartCount", CartCount);
+          toast.success("Item Added to Cart");
+        } else {
+          toast.error("Failed to Add ");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     getProduct();
-  }, []);
+  }, [CartCount]);
 
   return (
     <Layout title={"ShoppingMall- Shop Now"}>
-      {/* <div className="row mt-3"> */}
-
       <div className="col-md-12 order-md-2 order-1 pt-2">
-        {/* <h1 className="text-center">All Products</h1> */}
-        {/* <hr /> */}
-
         <div className="d-flex flex-wrap justify-content-center">
           {products?.map((p) => {
             return (
@@ -115,9 +127,6 @@ const HomePage = () => {
                       onCancel={handleCancel}
                       width={1000}
                     >
-                      {/* <ProductDetails productId={p.id}/> */}
-                      {/* -------------------------------------------------- */}
-
                       <div className="row container mt-3">
                         <div className="col-md-6">
                           <img
@@ -132,20 +141,12 @@ const HomePage = () => {
                             <div>
                               <h1 className="text-center">Product Details</h1>
                               <hr />
-                              {console.log(ProductDetail)}
                               <h6>Name :{ProductDetail.name}</h6>
                               <h6>Price :{ProductDetail.price}</h6>
                               <h6>Category :{ProductDetail?.category}</h6>
                               <button
                                 className="btn btn-light ms-1 btn-outline-dark m-1"
-                                onClick={() => {
-                                  setCart([...cart, ProductDetail]);
-                                  localStorage.setItem(
-                                    "cart",
-                                    JSON.stringify([...cart, ProductDetail])
-                                  );
-                                  toast.success("Item Added to Cart");
-                                }}
+                                onClick={addToCard}
                                 style={{ width: "100%" }}
                               >
                                 Add to Cart
@@ -154,7 +155,6 @@ const HomePage = () => {
                           </div>
                         </div>
                       </div>
-                      {/* -------------------------------------------------- */}
                     </Modal>
                   </div>
                 </div>
@@ -163,7 +163,6 @@ const HomePage = () => {
           })}
         </div>
       </div>
-      {/* </div> */}
     </Layout>
   );
 };

@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import { Delete as DeleteIcon, Edit as EditIcon } from "@material-ui/icons";
-// import { IconButton } from "@material-ui/core";
+
+import { BiSolidEditAlt } from "react-icons/bi";
+import { RiDeleteBack2Fill } from "react-icons/ri";
+
 
 const ManageProduct = () => {
   const [products, setproducts] = useState([]);
@@ -34,12 +36,13 @@ const ManageProduct = () => {
       `http://192.168.1.3:8080/product/${id}`
     );
     delete sigleProduct.data.image;
-    setUpdateProduct(sigleProduct.data);
   };
 
   const handleInputChange = (e) => {
+    console.log("onchange called");
     const { name, value } = e.target;
-    setproducts((preProductDetails) => ({
+
+    setUpdateProduct((preProductDetails) => ({
       ...preProductDetails,
       [name]: value,
     }));
@@ -76,15 +79,15 @@ const ManageProduct = () => {
           >
             Add Products
           </button>
-          <table className="container w-75 mx-5 table table-hover my-3">
+          <table className="container w-75 mx-5 table table-hover my-3 table-striped">
             <thead>
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">Name</th>
-                <th scope="col">category</th>
-                <th scope="col">price</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Remove</th>
+              <tr className="table-dark">
+                <th scope="col">ID</th>
+                <th scope="col">NAME</th>
+                <th scope="col">CATEGORY</th>
+                <th scope="col">PRICE</th>
+                <th scope="col">EDIT</th>
+                <th scope="col">REMOVE</th>
               </tr>
             </thead>
             <tbody>
@@ -105,7 +108,7 @@ const ManageProduct = () => {
                           handleEdit(ele.id);
                         }}
                       >
-                        Edit
+                        <BiSolidEditAlt />
                       </button>
                     </td>
                     <td>
@@ -114,7 +117,7 @@ const ManageProduct = () => {
                         className="btn btn-outline-danger"
                         onClick={() => handleDelete(ele.id)}
                       >
-                        Remove
+                        <RiDeleteBack2Fill />
                       </button>
                     </td>
                   </tr>
