@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React, { useState, useEffect } from 'react';
 import Layout from '../Layout/Layout';
 import { useCart } from '../ContextApi/Cart';
@@ -12,6 +13,32 @@ const CartPage = () => {
     const navigate = useNavigate();
     // const [clientToken, setClientToken] = useState("");
     // const [instance, setinstance] = useState("");
+=======
+import { useState, useEffect } from "react";
+import Layout from "../Layout/Layout";
+import { useCartCount } from "../ContextApi/Cart";
+import axios from "axios";
+import toast from "react-hot-toast";
+import DropIn from "braintree-web-drop-in-react";
+import { useNavigate } from 'react-router-dom';
+
+const CartPage = () => {
+  const [cartCount, setcartCount] = useCartCount();
+  const [cart, setCart] = useState([]);
+  const userId = 1;
+  const [clientToken, setClientToken] = useState("");
+  const [instance, setinstance] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const getPreviousPendingOrder = async () => {
+    const { data } = await axios.get(`http://192.168.1.3:8080/order/${userId}/pending`);
+    console.log("ha data card page", data);
+    setCart(data);
+  };
+  useEffect(() => {
+    getPreviousPendingOrder();
+  }, []);
+>>>>>>> Stashed changes
 
     //total price
     const totalPrice = () => {
@@ -43,6 +70,7 @@ const CartPage = () => {
         }
     }
 
+<<<<<<< Updated upstream
 
 
 
@@ -56,6 +84,20 @@ const CartPage = () => {
         } catch (error) {
             console.log(error);
         }
+=======
+  const handlePayment = async () => {
+    try{
+    setLoading(true);
+      await axios.put(`http://localhost:8080/order/${userId}`);
+     
+      setCart([])
+      setcartCount(0)
+      getPreviousPendingOrder();
+      navigate('/userOrder');
+      toast.success("Payment Completed Successfully");
+    } catch (error) {
+      console.log(error);
+>>>>>>> Stashed changes
     }
 
 
