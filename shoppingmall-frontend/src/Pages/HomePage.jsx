@@ -38,7 +38,7 @@ const HomePage = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `http://192.168.1.3:8080/product/allproducts`,
+        `http://localhost:8080/product/allproducts`,
         { withCredentials: false }
       );
       setLoading(false);
@@ -57,7 +57,7 @@ const HomePage = () => {
   const getProduct = async (productId) => {
     try {
       const { data } = await axios.get(
-        `http://192.168.1.3:8080/product/${productId}`
+        `http://localhost:8080/product/${productId}`
       );
 
       setProductDetail(data);
@@ -74,7 +74,7 @@ const HomePage = () => {
 
   const addToCard = async () => {
     const { data } = await axios
-      .post(`http://192.168.1.3:8080/order/add`, {
+      .post(`http://localhost:8080/order/add`, {
         ...orders,
         productId: ProductDetail.id,
       })
@@ -107,7 +107,7 @@ const HomePage = () => {
                   style={{ width: "16rem", height: "25rem" }}
                 >
                   <img
-                    src={`http://192.168.1.3:8080/product/${p.id}/image`}
+                    src={`http://localhost:8080/product/${p.id}/image`}
                     onClick={() => showModal(p.id)}
                     className="card-img-top"
                     alt={p.name}
@@ -130,7 +130,7 @@ const HomePage = () => {
                       <div className="row container mt-3">
                         <div className="col-md-6">
                           <img
-                            src={`http://192.168.1.3:8080/product/${selectedProduct}/image`}
+                            src={`http://localhost:8080/product/${selectedProduct}/image`}
                             className="img-fluid rounded"
                             alt={selectedProduct}
                             height={"300px"}

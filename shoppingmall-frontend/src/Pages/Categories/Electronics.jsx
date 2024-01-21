@@ -38,7 +38,7 @@ const Electronics = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `http://192.168.1.3:8080/product/allproducts/electronics`,
+        `http://localhost:8080/product/allproducts/electronics`,
         { withCredentials: false }
       );
       setLoading(false);
@@ -58,7 +58,7 @@ const Electronics = () => {
   const getProduct = async (productId) => {
     try {
       const { data } = await axios.get(
-        `http://192.168.1.3:8080/product/${productId}`
+        `http://localhost:8080/product/${productId}`
       );
 
       console.log(data);
@@ -75,7 +75,7 @@ const Electronics = () => {
   };
   const atTocart = async () => {
     const { data } = await axios
-      .post(`http://192.168.1.3:8080/order/add`, {
+      .post(`http://localhost:8080/order/add`, {
         ...orders,
         productId: ProductDetail.id,
       })
@@ -105,17 +105,17 @@ const Electronics = () => {
           {products?.map((p) => {
             return (
               <>
-                <div className="card m-4" style={{ width: "18rem" }}>
+                <div className="card m-4" style={{ width: "16rem", height: "25rem" }}>
                   <img
-                    src={`http://192.168.1.3:8080/product/${p.id}/image`}
+                    src={`http://localhost:8080/product/${p.id}/image`}
                     className="card-img-top"
                     onClick={() => showModal(p.id)}
                     alt={p.name}
                     height={"300px"}
+                    style={{ height: "300px" }}
                   />
-                  <div className="card-body">
+                  <div className="card-body text-center">
                     <h5 className="card-title">{p.name}</h5>
-                    <p className="card-text">{p.category}</p>
                     <p className="card-text">Rs.{p.price}</p>
 
                     <Modal
@@ -129,7 +129,7 @@ const Electronics = () => {
                       <div className="row container mt-3">
                         <div className="col-md-6">
                           <img
-                            src={`http://192.168.1.3:8080/product/${selectedProduct}/image`}
+                            src={`http://localhost:8080/product/${selectedProduct}/image`}
                             className="img-fluid rounded"
                             alt={selectedProduct}
                             height={"300px"}

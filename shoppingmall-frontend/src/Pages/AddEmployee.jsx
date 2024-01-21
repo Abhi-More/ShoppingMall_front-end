@@ -1,18 +1,20 @@
 import Layout from "../Layout/Layout";
-import React, { useState } from 'react';
+import React, { useState } from "react";
+
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const AddEmployee = () => {
   const [formData, setFormData] = useState({
-    employeeName: '',
-    employeeEmail: '',
-    employeePhoneno: '',
-    employeeSalary: '',
-    employeeDesignation: '',
-    employeeJoiningDate: '',
-    employeeAddress: '',
+    name: "",
+    email: "",
+    contactNo: "",
+    salary: "",
+    designation: "",
+    dateOfJoining: "",
+    address: "",
   });
 
- 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -21,105 +23,128 @@ const AddEmployee = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Employee Details saved Successfully:', formData);
+  const handleSubmit = async () => {
+    if (
+      (formData.name === "") |
+      (formData.email === "") |
+      (formData.contactNo === "") |
+      (formData.salary === "") |
+      (formData.address === "") |
+      (formData.dateOfJoining === "") |
+      (formData.designation === "")
+    ) {
+      toast.error("Please fill all fields!");
+    } else {
+      const response = await axios
+        .post("http://localhost:8080/employee", formData)
+        .then((res) => {
+          console.log("res status",res.status)
+          if (res.status === 201) {
+            toast.success("Employee Added");
+          } 
+        })
+        .catch((error) => {
+          toast.error("Try using different email");
+        });
+    }
   };
 
   return (
     <Layout>
-    <div className="container mt-5">
-      <form onSubmit={handleSubmit}>
-        <h3>Employee Form</h3>
+      <div className="container mt-5">
+        <h3 style={{textAlign:"center"}}>Employee Form</h3>
         <div className="mb-3">
-          {/* <label htmlFor="employeeName" className="form-label">Employee Name</label> */}
+          {/* <label htmlFor="name" className="form-label">Employee Name</label> */}
           <input
             type="text"
             className="form-control"
-            id="employeeName"
-            name="employeeName"
-            value={formData.employeeName}
+            id="name"
+            name="name"
+            value={formData.name}
             onChange={handleInputChange}
-            placeholder="Enter employee name"
+            placeholder="Employee name"
           />
         </div>
-      
+
         <div className="mb-3">
-          {/* <label htmlFor="employeeEmail" className="form-label">Employee Email</label> */}
+          {/* <label htmlFor="email" className="form-label">Employee Email</label> */}
           <input
             type="email"
             className="form-control"
-            id="employeeEmail"
-            name="employeeEmail"
-            value={formData.employeeEmail}
+            id="email"
+            name="email"
+            value={formData.email}
             onChange={handleInputChange}
-            placeholder="Enter employee email"
+            placeholder="Employee email"
           />
         </div>
         <div className="mb-3">
-          {/* <label htmlFor="employeeName" className="form-label">Employee Phone no</label> */}
+          {/* <label htmlFor="name" className="form-label">Employee Phone no</label> */}
           <input
             type="tel"
             className="form-control"
-            id="employeePhoneno"
-            name="employeePhoneno"
-            value={formData.employeePhoneno}
+            id="contactNo"
+            name="contactNo"
+            value={formData.contactNo}
             onChange={handleInputChange}
-            placeholder="Enter employee Phone no"
+            placeholder="Employee Phone no"
           />
         </div>
         <div className="mb-3">
-          {/* <label htmlFor="employeeSalary" className="form-label">Salary</label> */}
+          {/* <label htmlFor="salary" className="form-label">Salary</label> */}
           <input
             type="number"
             className="form-control"
-            id="employeeSalary"
-            name="employeeSalary"
-            value={formData.employeeSalary}
+            id="salary"
+            name="salary"
+            value={formData.salary}
             onChange={handleInputChange}
-            placeholder="Enter employee salary"
+            placeholder="Employee salary"
           />
         </div>
         <div className="mb-3">
-          {/* <label htmlFor="employeeDesignation" className="form-label">Designation</label> */}
+          {/* <label htmlFor="designation" className="form-label">Designation</label> */}
           <input
             type="text"
             className="form-control"
-            id="employeeDesignation"
-            name="employeeDesignation"
-            value={formData.employeeDesignation}
+            id="designation"
+            name="designation"
+            value={formData.designation}
             onChange={handleInputChange}
-            placeholder="Enter employee designation"
+            placeholder="Employee designation"
           />
         </div>
         <div className="mb-3">
-          {/* <label htmlFor="employeeJoiningDate" className="form-label">Date of Joining</label> */}
+          {/* <label htmlFor="dateOfJoining" className="form-label">Date of Joining</label> */}
           <input
             type="date"
             className="form-control"
-            id="employeeJoiningDate"
-            name="employeeJoiningDate"
-            value={formData.employeeJoiningDate}
+            id="dateOfJoining"
+            name="dateOfJoining"
+            value={formData.dateOfJoining}
             onChange={handleInputChange}
           />
         </div>
         <div className="mb-3">
-          {/* <label htmlFor="employeeAddress" className="form-label">Address</label> */}
+          {/* <label htmlFor="address" className="form-label">Address</label> */}
           <input
             type="text"
             className="form-control"
-            id="employeeAddress"
-            name="employeeAddress"
-            value={formData.employeeAddress}
+            id="address"
+            name="address"
+            value={formData.address}
             onChange={handleInputChange}
-            placeholder="Enter employee address"
+            placeholder="Employee address"
           />
         </div>
-        <button type="submit" className="btn btn-primary btn-center">
+        <button
+          type="submit"
+          className="btn btn-primary btn-center"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
-      </form>
-    </div>
+      </div>
     </Layout>
   );
 };

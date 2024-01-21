@@ -9,7 +9,7 @@ const CartPage = () => {
   const [cart, setCart] = useState([]);
   const userId = 1;
   const getPreviousPendingOrder = async () => {
-    const { data } = await axios.get(`http://192.168.1.3:8080/order/${userId}`);
+    const { data } = await axios.get(`http://localhost:8080/order/${userId}/pending`);
     console.log("ha data card page", data);
     setCart(data);
   };
@@ -39,7 +39,7 @@ const CartPage = () => {
   //remove from cart
   const removeCartItem = async (orderId) => {
     try {
-      await axios.delete(`http://192.168.1.3:8080/order/delete/${orderId}`);
+      await axios.delete(`http://localhost:8080/order/delete/${orderId}`);
       toast.success("order removed successfully!");
       getPreviousPendingOrder();
 
@@ -51,9 +51,9 @@ const CartPage = () => {
 
   const handlePayment = async () => {
     try {
-      await axios.put(`http://192.168.1.3:8080/order/${userId}`);
-      console.log("payment");
+      await axios.put(`http://localhost:8080/order/${userId}`);
       toast.success("Payment Completed Successfully");
+      getPreviousPendingOrder();
     } catch (error) {
       console.log(error);
     }
@@ -80,7 +80,7 @@ const CartPage = () => {
                 <div className="row mb-2 p-3 card flex-row" key={p.id}>
                   <div className="col-md-4 d-flex align-items-center justify-content-center">
                     <img
-                      src={`http://192.168.1.3:8080/product/${p.product.id}/image`}
+                      src={`http://localhost:8080/product/${p.product.id}/image`}
                       className="img-fluid"
                       alt={p.product.name}
                       width={"100px"}

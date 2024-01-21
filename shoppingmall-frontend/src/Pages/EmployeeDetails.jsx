@@ -10,7 +10,7 @@ const EmployeeDetails = () => {
   const [employees, setEmployees] = useState([]);
   const navigate = useNavigate();
   const getEmployees = async () => {
-    const data = await axios.get(`http://192.168.1.3:8080/employee/all`);
+    const data = await axios.get(`http://localhost:8080/employee/all`);
     setEmployees(data.data);
   };
 
@@ -30,7 +30,7 @@ const EmployeeDetails = () => {
   const handleDelete = async (id) => {
     let isvalid = true;
     const resp = await axios
-      .delete(`http://192.168.1.3:8080/employee/${id}`)
+      .delete(`http://localhost:8080/employee/${id}`)
       .then((res) => {
         if (res.status === 200) {
           isvalid = true;
@@ -56,36 +56,6 @@ const EmployeeDetails = () => {
     setEmpId(id);
   };
 
-  const newUser = {
-    name: "Ashu Sir",
-    email: "Ashu@Ashu.com",
-    contactNo: "+9195745639876",
-    address: "Mumbai",
-    dateOfJoining: "10/2/2023",
-    salary: 1000,
-    password: "Ashu@Ashu",
-    designation: "Product Er",
-  };
-
-  const AddNewEmp = async () => {
-    navigate("/addEmployee");
-    // let isvalid = true;
-    // const resp = await axios
-    //   .post("http://192.168.1.4:8080/employee", newUser)
-    //   .then()
-    //   .catch((e) => {
-    //     if (e.response.status === 409);
-    //     {
-    //       isvalid = false;
-    //     }
-    //   });
-    // if (!isvalid) {
-    //   toast.error("Email already Exists");
-    // } else {
-    //   toast.success("Employee added successfully");
-    // }
-    // getEmployees();
-  };
 
   return (
     <>
@@ -94,7 +64,7 @@ const EmployeeDetails = () => {
           {" "}
           <button
             className="my-3 btn btn-outline-success"
-            onClick={() => AddNewEmp()}
+            onClick={() => {navigate("/addEmployee")}}
           >
             <MdPersonAddAlt1 /> Add Employee
           </button>

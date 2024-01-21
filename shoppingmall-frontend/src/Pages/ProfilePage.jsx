@@ -11,9 +11,9 @@ const ProfilePage = () => {
     contactNo: "",
     address: "",
   });
-  const userId = 1;
+  const userId = 2;
   const getSingleUser = async () => {
-    const data = await axios.get(`http://192.168.1.3:8080/employee/${userId}`, {
+    const data = await axios.get(`http://localhost:8080/employee/${userId}`, {
       withCredentials: false,
     });
     setEmpId(data.data.empId);
@@ -68,7 +68,7 @@ const ProfilePage = () => {
         updateUserDetails.country,
     };
     const updateUser = await axios.put(
-      `http://192.168.1.3:8080/employee/${userId}`,
+      `http://localhost:8080/employee/${userId}`,
       newUpdateUser
     );
     getSingleUser();

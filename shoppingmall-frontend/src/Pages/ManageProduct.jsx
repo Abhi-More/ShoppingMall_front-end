@@ -11,7 +11,7 @@ const ManageProduct = () => {
   const [products, setproducts] = useState([]);
   const navigate = useNavigate();
   const allproducts = async () => {
-    const data = await axios.get(`http://192.168.1.3:8080/product/allproducts`);
+    const data = await axios.get(`http://localhost:8080/product/allproducts`);
     setproducts(data.data);
   };
 
@@ -27,13 +27,13 @@ const ManageProduct = () => {
   });
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://192.168.1.3:8080/product/delete/${id}`);
+    await axios.delete(`http://localhost:8080/product/delete/${id}`);
     allproducts();
   };
 
   const handleEdit = async (id) => {
     const sigleProduct = await axios.get(
-      `http://192.168.1.3:8080/product/${id}`
+      `http://localhost:8080/product/${id}`
     );
     delete sigleProduct.data.image;
   };
@@ -58,7 +58,7 @@ const ManageProduct = () => {
   const addNewProduct = async () => {
     navigate("/addProduct");
     // axios
-    //   .post(`http://192.168.1.3:8080/product/addproduct`, formData)
+    //   .post(`http://localhost:8080/product/addproduct`, formData)
     //   .then((response) => {
     //     console.log("Response:", response.data);
     //   })

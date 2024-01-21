@@ -4,7 +4,7 @@ import axios from "axios";
 const UserOrders = () => {
   const [orders, setorders] = useState([]);
   const allproducts = async () => {
-    const data = await axios.get(`http://192.168.1.3:8080/order/all`);
+    const data = await axios.get(`http://localhost:8080/order/all`);
     console.log(data.data);
     setorders(data.data);
   };
@@ -42,8 +42,8 @@ const UserOrders = () => {
                     <td>{ele.product.name}</td>
                     <td>{ele.product.category}</td>
                     <td>{ele.product.price}</td>
-                    <td>{ele.date === undefined ? "10/2/2024" : ele.date}</td>
-                    <td>{ele.time === undefined ? "5:54:22 PM" : ele.time}</td>
+                    <td>{ele.timeAndDate === null ? "10/2/2024" : ele.order.timeAndDate.split(" ")[2]+" / "+ele.order.timeAndDate.split(" ")[1]+" / "+ele.order.timeAndDate.split(" ")[5]}</td>
+                    <td>{ele.order.timeAndDate === null ? "5:54:22 PM" : ele.order.timeAndDate.split(" ")[3]}</td>
                     <td
                       style={{
                         color: `${
