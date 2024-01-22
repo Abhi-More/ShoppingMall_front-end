@@ -3,32 +3,36 @@ import LoginPic from "../assets/images/signup-image.jpg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import axios from 'axios'
 const LoginDemo = () => {
   const [email, Setemail] = useState("");
   const [password, Setpassword] = useState("");
   const navigate = useNavigate();
 
-  const signIn = (e) => {
+  const signIn = async (e) => {
     e.preventDefault();
-    let isvalid = false;
-    if (email === "" || password === "") {
-      toast.error("Please fill all fields!");
-    } else {
-      if (email === "admin@admin.com" && password === "admin") {
-        isvalid = true;
-        let data = JSON.stringify({ email, password });
+    
+    try {
+      const response = await axios.post("http://localhost:8080/auth/login", {
+        username: email,
+        password: password,
+      });
+
+      // Assuming your backend returns a success status or some data indicating success
+      if (response.status === 200) {
+        toast.success("Login successful!!")
+        console.log("token ----- ",response.data)
+        navigate("/homepage");
       } else {
-        isvalid = false;
-        toast.error(" Invalid credential !!");
+        toast.error("Login failed. Please check your credentials.");
+        navigate("/");
       }
-    }
-    if (isvalid) {
-      // alert("login succefully !!");
-      toast.success(" login successfully !!");
-      navigate("/homepage");
-    } else {
+    } catch (error) {
+      console.error("Error during login:", error);
+      toast.error("Invalid credential");
       navigate("/");
     }
+
   };
   return (
     <div>
