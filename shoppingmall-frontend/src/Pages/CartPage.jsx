@@ -1,131 +1,129 @@
-import React, { useState, useEffect } from 'react';
-import Layout from '../Layout/Layout';
-import { useCart } from '../ContextApi/Cart';
-// import { useAuth } from '../context/auth';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import { useState, useEffect } from "react";
+import Layout from "../Layout/Layout";
+import { useCartCount } from "../ContextApi/Cart";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const CartPage = () => {
-    const [cart, setCart] = useCart();
-    // const [auth, setAuth] = useAuth();
-    const navigate = useNavigate();
-    // const [clientToken, setClientToken] = useState("");
-    // const [instance, setinstance] = useState("");
+  const [cartCount, setcartCount] = useCartCount();
+  const [cart, setCart] = useState([]);
+  const userId = 1;
+  const getPreviousPendingOrder = async () => {
+    const { data } = await axios.get(`http://localhost:8080/order/${userId}/pending`);
+    console.log("ha data card page", data);
+    setCart(data);
+  };
+  useEffect(() => {
+    getPreviousPendingOrder();
+  }, []);
 
-    //total price
-    const totalPrice = () => {
-        try {
-            let total = 0;
-            cart?.map(item => {
-                total = total + item.price
-            });
-            return total
-            //     maximumFractionDigits: 2,
-            //     style: 'currency',
-            //     currency: 'INR'
-            // });
-        } catch (error) {
-            console.log(error);
-        }
+  //total price
+  const totalPrice = () => {
+    try {
+      let count = 0;
+      let total = 0;
+      cart?.map((item, index) => {
+        count = index + 1;
+        total = total + item.product.price;
+        console.log();
+      });
+      setcartCount(count);
+      console.log("cart count", cartCount);
+      console.log(total);
+      return Math.round(total);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    //remove from cart
-    const removeCartItem = (pid) => {
-        try {
-            let myCart = [...cart];
-            let index = myCart.findIndex(item => item.id === pid);
-            myCart.splice(index, 1);
-            setCart(myCart);
-            localStorage.setItem('cart', JSON.stringify(myCart));
-        } catch (error) {
-            console.log(error);
-        }
+  //remove from cart
+  const removeCartItem = async (orderId) => {
+    try {
+      await axios.delete(`http://localhost:8080/order/delete/${orderId}`);
+      toast.success("order removed successfully!");
+      getPreviousPendingOrder();
+
+      localStorage.setItem("cartCount", setcartCount(cartCount - 1));
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-
-
-
-    const handlePayment = async () => {
-        try {
-
-            localStorage.removeItem('cart');
-            setCart([]);
-            navigate('/homepage');
-            toast.success('Payment Completed Successfully');
-        } catch (error) {
-            console.log(error);
-        }
+  const handlePayment = async () => {
+    try {
+      await axios.put(`http://localhost:8080/order/${userId}`);
+      toast.success("Payment Completed Successfully");
+      getPreviousPendingOrder();
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-
-
-    return (
-        <Layout title={"Cart"}>
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-4 w-100">
-                        <h1 className="text-center bg-light p-2 mb-1">
-                            {`Hello User`}
-                        </h1>
-                        <h4 className='text-center'>
-                            {cart?.length ? `You have ${cart.length} items in your cart`
-                                : "Your Cart is Empty"}
-                        </h4>
-                    </div>
-                    <hr />
+  return (
+    <Layout title={"Cart"}>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-4 w-100">
+            <h1 className="text-center bg-light p-2 mb-1">{`Hello User`}</h1>
+            <h4 className="text-center">
+              {cart?.length
+                ? `You have ${cart.length} items in your cart`
+                : "Your Cart is Empty"}
+            </h4>
+          </div>
+          <hr />
+        </div>
+        <div className="row">
+          <div className="col-md-8">
+            {cart?.map((p) => (
+              <>
+                <div className="row mb-2 p-3 card flex-row" key={p.id}>
+                  <div className="col-md-4 d-flex align-items-center justify-content-center">
+                    <img
+                      src={`http://localhost:8080/product/${p.product.id}/image`}
+                      className="img-fluid"
+                      alt={p.product.name}
+                      width={"100px"}
+                      height={"100px"}
+                    />
+                  </div>
+                  <div className="col-md-8">
+                    <p>{p.product.name}</p>
+                    <p>&#x20B9; {p.product.price}</p>
+                    {/* <p>{p.product.description}</p> */}
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => removeCartItem(p.order.orderId)}
+                    >
+                      Remove Item
+                    </button>
+                  </div>
                 </div>
-                <div className="row">
-                    <div className="col-md-8">
-                        
-                            {
-                                cart?.map(p => (
-                                    <>
+              </>
+            ))}
+          </div>
+          <div className="col-md-4 text-center">
+            <h4>Cart Summary</h4>
+            <hr />
 
-                                        <div className="row mb-2 p-3 card flex-row" key={p.id}>
-                                            <div className="col-md-4 d-flex align-items-center justify-content-center">
-                                                <img
-                                                    src={`http://localhost:8080/product/${p.id}/image`}
-                                                    className="img-fluid"
-                                                    alt={p.name}
-                                                    width={"100px"}
-                                                    height={"100px"}
-                                                />
-                                            </div>
-                                            <div className="col-md-8">
-                                                <p>{p.name}</p>
-                                                <p>{p.category}</p>
-                                                <p>{p.price}</p>
-                                                <button className='btn btn-danger' onClick={() => removeCartItem(p.id)}>Remove Item</button>
-                                            </div>
-                                        </div>
-                                    </>
-                                ))
-                            }
-                    </div>
-                    <div className="col-md-4 text-center">
-                        <h4>Cart Summary</h4>
-                        <hr />
+            <h4>Total: {totalPrice()} </h4>
 
-                        <h4>Total: {totalPrice()} </h4>
-
-                        <div className="mt-2">
-                            {!cart?.length ? ("") : (
-                                <>
-
-                                    <button className='btn btn-primary' onClick={handlePayment}>
-                                        Make Payment
-                                    </button>
-                                </>)}
-
-                        </div>
-                    </div>
-
-                </div>
+            <div className="mt-2">
+              {!cart?.length ? (
+                ""
+              ) : (
+                <>
+                  <button className="btn btn-primary" onClick={handlePayment}>
+                    Make Payment
+                  </button>
+                </>
+              )}
             </div>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+};
 
-        </Layout>
-    )
-}
-
-export default CartPage
+export default CartPage;
