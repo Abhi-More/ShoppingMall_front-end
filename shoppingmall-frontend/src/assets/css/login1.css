@@ -253,7 +253,7 @@ body {
   font-family: Poppins;
 }
 
-.container {
+.container_page {
   width: 900px;
   background: #fff;
   margin: 0 auto;
@@ -589,14 +589,14 @@ label.valid:after {
 }
 
 @media screen and (max-width: 1200px) {
-  .container {
+  .container_page {
     width: calc(100% - 30px);
     max-width: 100%;
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .container {
+  .container_page {
     max-width: 1200px;
   }
 }
