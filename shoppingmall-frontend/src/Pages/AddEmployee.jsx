@@ -38,10 +38,9 @@ const AddEmployee = () => {
       const response = await axios
         .post("http://localhost:8080/employee", formData)
         .then((res) => {
-          console.log("res status",res.status)
           if (res.status === 201) {
             toast.success("Employee Added");
-          } 
+          }
         })
         .catch((error) => {
           toast.error("Try using different email");
@@ -51,10 +50,12 @@ const AddEmployee = () => {
 
   return (
     <Layout>
-      <div className="container mt-5">
-        <h3 style={{textAlign:"center"}}>Employee Form</h3>
+      <div
+        className="container mt-5 py-3"
+        style={{ width: "850px", padding: "0px 50px", background: "rgb(234 234 234)"}}
+      >
+        <h3 className="mb-3" style={{ textAlign: "center" }}>Fill Employee Details</h3>
         <div className="mb-3">
-          {/* <label htmlFor="name" className="form-label">Employee Name</label> */}
           <input
             type="text"
             className="form-control"
@@ -67,7 +68,6 @@ const AddEmployee = () => {
         </div>
 
         <div className="mb-3">
-          {/* <label htmlFor="email" className="form-label">Employee Email</label> */}
           <input
             type="email"
             className="form-control"
@@ -79,7 +79,6 @@ const AddEmployee = () => {
           />
         </div>
         <div className="mb-3">
-          {/* <label htmlFor="name" className="form-label">Employee Phone no</label> */}
           <input
             type="tel"
             className="form-control"
@@ -87,11 +86,10 @@ const AddEmployee = () => {
             name="contactNo"
             value={formData.contactNo}
             onChange={handleInputChange}
-            placeholder="Employee Phone no"
+            placeholder="Employee phone no"
           />
         </div>
         <div className="mb-3">
-          {/* <label htmlFor="salary" className="form-label">Salary</label> */}
           <input
             type="number"
             className="form-control"
@@ -103,7 +101,6 @@ const AddEmployee = () => {
           />
         </div>
         <div className="mb-3">
-          {/* <label htmlFor="designation" className="form-label">Designation</label> */}
           <input
             type="text"
             className="form-control"
@@ -115,7 +112,6 @@ const AddEmployee = () => {
           />
         </div>
         <div className="mb-3">
-          {/* <label htmlFor="dateOfJoining" className="form-label">Date of Joining</label> */}
           <input
             type="date"
             className="form-control"
@@ -126,7 +122,6 @@ const AddEmployee = () => {
           />
         </div>
         <div className="mb-3">
-          {/* <label htmlFor="address" className="form-label">Address</label> */}
           <input
             type="text"
             className="form-control"
@@ -137,13 +132,15 @@ const AddEmployee = () => {
             placeholder="Employee address"
           />
         </div>
-        <button
-          type="submit"
-          className="btn btn-primary btn-center"
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
+        <center>
+          <button
+            type="submit"
+            className="btn btn-outline-primary"
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
+        </center>
       </div>
     </Layout>
   );

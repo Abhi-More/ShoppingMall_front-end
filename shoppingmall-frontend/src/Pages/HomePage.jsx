@@ -103,22 +103,23 @@ const HomePage = () => {
             return (
               <>
                 <div
-                  className="card m-4 "
-                  style={{ width: "16rem", height: "25rem" }}
+                  className="card m-4 p-3"
+                  style={{ width: "16rem", height: "24rem" }}
                 >
                   <img
                     src={`http://localhost:8080/product/${p.id}/image`}
                     onClick={() => showModal(p.id)}
                     className="card-img-top"
                     alt={p.name}
-                    height={"300px"}
-                    style={{ height: "300px" }}
+                    style={{ height: "280px"}}
                   />
-                  <div className="card-body text-center">
-                    <h5 className="card-title">{p.name}</h5>
-                    {/* <p className="card-text">{p.category}</p> */}
-                    <p className="card-text">Rs.{p.price}</p>
-
+                  <div className="card-body text-center px-2">
+                    <h5 style={{color:"#878787"}} className="card-title"><b>{p.name}</b></h5>
+                    <div><b>
+                      <p style={{float:"left", color: "black", fontSize:"16px"}} className="card-text">₹ {p.price}</p>
+                      <p style={{color: "#388e3c", float:"right", fontSize:"16px"}} className="card-text">{p.discount}% off</p></b>
+                    </div>
+                    
                     <Modal
                       title="Product Detail"
                       open={open}
@@ -127,29 +128,29 @@ const HomePage = () => {
                       onCancel={handleCancel}
                       width={1000}
                     >
-                      <div className="row container mt-3">
+                      <div className="row container">
                         <div className="col-md-6">
                           <img
                             src={`http://localhost:8080/product/${selectedProduct}/image`}
                             className="img-fluid rounded"
                             alt={selectedProduct}
-                            height={"300px"}
+                            style={{ height: "300px"}}
                           />
                         </div>
                         <div className="col-md-6">
                           <div className="d-flex flex-column justify-content-between h-100 p-3">
                             <div>
-                              <h1 className="text-center">Product Details</h1>
-                              <hr />
-                              <h6>Name :{ProductDetail.name}</h6>
-                              <h6>Price :{ProductDetail.price}</h6>
-                              <h6>Category :{ProductDetail?.category}</h6>
+                              <h2 style={{color:"#2874f0"}}>{ProductDetail.name}</h2>
+                              <p style={{fontSize:"15px", marginBottom:"-8px"}}>special price</p>
+                              <b><p style={{color:"black", fontSize:"30px"}}>&#x20B9; {ProductDetail.price} <span style={{color: "#388e3c", fontSize:"18px", marginLeft:"15px"}}>{ProductDetail.discount}% off</span></p></b>
+                              <p>Category : {ProductDetail?.category}</p>
+                              <h6>{ProductDetail.description}</h6>
                               <button
                                 className="btn btn-light ms-1 btn-outline-dark m-1"
                                 onClick={addToCard}
                                 style={{ width: "100%" }}
                               >
-                                Add to Cart
+                              Add to Cart
                               </button>
                             </div>
                           </div>

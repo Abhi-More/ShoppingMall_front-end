@@ -89,7 +89,8 @@ const CartPage = () => {
                   </div>
                   <div className="col-md-8">
                     <p>{p.product.name}</p>
-                    <p>${p.product.price}</p>
+                    <p>&#x20B9; {p.product.price}</p>
+                    {/* <p>{p.product.description}</p> */}
                     <button
                       className="btn btn-danger"
                       onClick={() => removeCartItem(p.order.orderId)}
