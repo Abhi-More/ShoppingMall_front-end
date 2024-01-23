@@ -35,7 +35,7 @@ const LoginDemo = () => {
       <div className="main">
         {/* Sing in  Form */}
         <section className="sign-in pt-5">
-          <div className="container_page">
+          <div className="container">
             <div className="signin-content">
               <div className="signin-image">
                 <figure>
