@@ -4,10 +4,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from 'axios'
+import {jwtDecode} from 'jwt-decode';
+import { useCartCount } from "../ContextApi/Cart";
+
 const LoginDemo = () => {
   const [email, Setemail] = useState("");
   const [password, Setpassword] = useState("");
   const navigate = useNavigate();
+
+  const [cartCount, setCartCount] = useCartCount();
 
   const signIn = async (e) => {
     e.preventDefault();
@@ -21,14 +26,25 @@ const LoginDemo = () => {
       // Assuming your backend returns a success status or some data indicating success
       if (response.status === 200) {
         toast.success("Login successful!!")
-        console.log("token ----- ",response.data)
+        // console.log("token ----- ",response.data)
+        const token = response.data
+        console.log("here-----------")
+        const decodedToken = jwtDecode(token);
+        // const userId = decodedToken.id;
+        // const userEmail = decodedToken.name;
+        console.log("decoded----- ", decodedToken)
+
+        console.log("id ----", decodedToken.id)
+        console.log("email ----", decodedToken.sub)
+
+        // setUserId(decodedToken.id);
         navigate("/homepage");
       } else {
         toast.error("Login failed. Please check your credentials.");
         navigate("/");
       }
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error("Error during login:", error.message);
       toast.error("Invalid credential");
       navigate("/");
     }
