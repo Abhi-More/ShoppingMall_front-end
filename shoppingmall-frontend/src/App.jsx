@@ -23,7 +23,7 @@ import AddProduct from "./Pages/AddProduct";
 import UserOrders from "./Pages/UserOrders";
 
 function App() {
-  const data = useContext(AppContext);
+  const userId = useContext(AppContext);
   return (
     <>
       <Router>

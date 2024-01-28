@@ -1,10 +1,36 @@
-import AppContext from "./CreateContextApi";
+// import { useState, useContext, createContext, useEffect } from "react";
+// import AppContext from "./CreateContextApi";
 
-const ContextApi = (props) => {
-  const data = "TNS Project";
+// const ContextApi = (props) => {
+  
+//   const [userId,setuserId] = useState("ABC")
+
+//   return (
+//     <AppContext.Provider value={[userId,setuserId]}>{props.children}</AppContext.Provider>
+//   );
+// };
+// export default ContextApi;
+
+import { useState, useContext, createContext, useEffect } from "react";
+
+const CartContext = createContext();
+
+const UserProvider = ({ children }) => {
+  // const [cartCount, setcartCount] = usecartCount();
+  const [user, setUser] = useState([]);
+
+  // useEffect(() => {
+  //   let existingCartCount = localStorage.getItem("cartCount");
+  //   if (existingCartCount) setcartCount(existingCartCount);
+  // }, []);
 
   return (
-    <AppContext.Provider value={data}>{props.children}</AppContext.Provider>
+    <CartContext.Provider value={[user, setUser]}>
+      {children}
+    </CartContext.Provider>
   );
 };
-export default ContextApi;
+//custom hook
+const useInfo = () => useContext(CartContext);
+
+export { useInfo, UserProvider };

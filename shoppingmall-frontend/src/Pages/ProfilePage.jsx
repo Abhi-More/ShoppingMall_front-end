@@ -3,19 +3,28 @@ import "../assets/css/profilePage.css";
 import { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import axios from "axios";
+import { useCartCount } from "../ContextApi/Cart";
+import {useInfo} from "../ContextApi/ContextApi"
 const ProfilePage = () => {
   const [EmpId, setEmpId] = useState();
+  const cart=useCartCount()
+  const [user,setUser]=useInfo([])
   const [userDetails, setUserDetails] = useState({
     name: "",
     email: "",
     contactNo: "",
     address: "",
   });
-  const userId = 2;
+  const userId = user[0].id;
   const getSingleUser = async () => {
-    const data = await axios.get(`http://localhost:8080/employee/${userId}`, {
+    const data = await axios.get(`http://localhost:8080/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${user[1]}`,
+      },
+
       withCredentials: false,
     });
+    console.log("user : ",data);
     setEmpId(data.data.empId);
     delete data.data.empId;
     delete data.data.dateOfJoining;
@@ -85,6 +94,11 @@ const ProfilePage = () => {
       country: "",
     });
   };
+  useEffect(()=>{
+console.log(user[0]);
+console.log(user[1]);
+// console.log(user.id);
+  },[])
   return (
     <>
       <Layout>
