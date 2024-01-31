@@ -61,7 +61,7 @@ Before you begin, ensure you have the following installed on your machine:
 - [Saish Thorat](https://github.com/git-saish-18)
 - [Sandip Zalte](https://github.com/GitSandip)
 - [Abhishek More](https://github.com/Abhi-More)
-- [Darshan Desale](https://github.com/darshandesale)
+- [Darshan Desale](https://github.com/darshan9396)
 
 ### Licenses
 ## License
