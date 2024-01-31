@@ -1,0 +1,42 @@
+.divider:after,
+.divider:before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
+}
+.h-custom {
+  height: calc(100% - 73px);
+}
+
+
+.row {
+  padding: 6rem 10rem 3rem 10rem;
+  margin-top: 0rem;
+  background-color: rgb();
+  background-color: #ededed;
+  border-radius: 2rem;
+}
+
+.container-fluid.p-3.my-5.h-custom {
+  border-radius: 1rem;
+  /* width: 88rem; */
+  border: 0rem solid #ededed;
+  background-color: #ededed;
+}
+
+@media (max-width: 450px) {
+  .h-custom {
+    height: 100%;
+  }
+  .row {
+    padding: 1rem;
+  }
+
+  .container-fluid.p-3.my-5.h-custom {
+    width: 100%;
+  }
+  .MDBInput {
+    min-width: 200px;
+  }
+}
