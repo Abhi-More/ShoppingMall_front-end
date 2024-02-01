@@ -5,10 +5,11 @@ import toast from "react-hot-toast";
 import { useCartCount } from "../ContextApi/Cart";
 import { Modal } from "antd";
 import { useInfo } from "../ContextApi/ContextApi";
+import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const [CartCount, setCartCount] = useCartCount();
-  const [user,setUser]=useInfo()
-
+  const [user, setUser] = useInfo()
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -59,39 +60,42 @@ const HomePage = () => {
   const getProduct = async (productId) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8080/product/${productId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user[1]}`,
-          },
-        }
+        `http://localhost:8080/product/get/${productId}`
       );
-        console.log("productid",productId);
-        console.log("data",data);
+      console.log("productid", productId);
+      // console.log("data",data);
       setProductDetail(data);
+
     } catch (error) {
       console.log(error);
     }
   };
   const orders = {
-    userId: 1,
-    productId: 5,
+    userId: user[0].id === undefined ? "" : user[0].id,
+    productId: "",
     status: "PENDING",
     timeAndDate: "",
   };
 
   const addToCard = async () => {
+
+    if (user.length === 0) {
+      toast.error('Please Log in to add items in Cart')
+      navigate('/login')
+    }
+    console.log("orders", orders);
+    console.log("pdetail", ProductDetail);
     const { data } = await axios
       .post(`http://localhost:8080/order/add`,
-       {
-        ...orders,
-        productId: ProductDetail.id,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${user[1]}`,
+        {
+          ...orders,
+          productId: ProductDetail.id,
         },
-      })
+        {
+          headers: {
+            Authorization: `Bearer ${user[1]}`,
+          },
+        })
       .then((res) => {
         if (res.status === 200) {
           setCartCount(CartCount + 1);
@@ -109,11 +113,9 @@ const HomePage = () => {
     getProduct();
   }, [CartCount]);
 
-  useEffect(()=>{
-    console.log(user);
-  },[])
+
   return (
-    <Layout title={"ShoppingMall- Shop Now"}>
+    <Layout title={"BlinkCart- Shop Now"}>
       <div className="col-md-12 order-md-2 order-1 pt-2">
         <div className="d-flex flex-wrap justify-content-center">
           {products?.map((p) => {
@@ -128,15 +130,15 @@ const HomePage = () => {
                     onClick={() => showModal(p.id)}
                     className="card-img-top"
                     alt={p.name}
-                    style={{ height: "280px"}}
+                    style={{ height: "280px" }}
                   />
                   <div className="card-body text-center px-2">
-                    <h5 style={{color:"#878787"}} className="card-title"><b>{p.name}</b></h5>
+                    <h5 style={{ color: "#878787" }} className="card-title"><b>{p.name}</b></h5>
                     <div><b>
-                      <p style={{float:"left", color: "black", fontSize:"16px"}} className="card-text">₹ {p.price}</p>
-                      <p style={{color: "#388e3c", float:"right", fontSize:"16px"}} className="card-text">{p.discount}% off</p></b>
+                      <p style={{ float: "left", color: "black", fontSize: "16px" }} className="card-text">₹ {p.price}</p>
+                      <p style={{ color: "#388e3c", float: "right", fontSize: "16px" }} className="card-text">{p.discount}% off</p></b>
                     </div>
-                    
+
                     <Modal
                       title="Product Detail"
                       open={open}
@@ -151,15 +153,15 @@ const HomePage = () => {
                             src={`http://localhost:8080/product/${selectedProduct}/image`}
                             className="img-fluid rounded"
                             alt={selectedProduct}
-                            style={{ height: "300px"}}
+                            style={{ height: "300px" }}
                           />
                         </div>
                         <div className="col-md-6">
                           <div className="d-flex flex-column justify-content-between h-100 p-3">
                             <div>
-                              <h2 style={{color:"#2874f0"}}>{ProductDetail.name}</h2>
-                              <p style={{fontSize:"15px", marginBottom:"-8px"}}>special price</p>
-                              <b><p style={{color:"black", fontSize:"30px"}}>&#x20B9; {ProductDetail.price} <span style={{color: "#388e3c", fontSize:"18px", marginLeft:"15px"}}>{ProductDetail.discount}% off</span></p></b>
+                              <h2 style={{ color: "#2874f0" }}>{ProductDetail.name}</h2>
+                              <p style={{ fontSize: "15px", marginBottom: "-8px" }}>special price</p>
+                              <b><p style={{ color: "black", fontSize: "30px" }}>&#x20B9; {ProductDetail.price} <span style={{ color: "#388e3c", fontSize: "18px", marginLeft: "15px" }}>{ProductDetail.discount}% off</span></p></b>
                               <p>Category : {ProductDetail?.category}</p>
                               <h6>{ProductDetail.description}</h6>
                               <button
@@ -167,7 +169,7 @@ const HomePage = () => {
                                 onClick={addToCard}
                                 style={{ width: "100%" }}
                               >
-                              Add to Cart
+                                Add to Cart
                               </button>
                             </div>
                           </div>

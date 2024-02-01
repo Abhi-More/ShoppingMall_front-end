@@ -102,7 +102,7 @@ console.log(user[1]);
   },[])
   return (
     <>
-      <Layout>
+      <Layout title={"Profile Page"}>
         <div>
           <div className="container mt-3">
             <div className="main-body">

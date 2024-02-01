@@ -13,7 +13,7 @@ const Policy = () => {
         <div className="col-md-7">
           <div className="container mt-4">
             <h1>Privacy Policy</h1>
-            <p>Last Updated: 28/12/23</p>
+            <p>Last Updated: 01/02/24</p>
 
             <h2>Information We Collect</h2>
             <p>
@@ -46,7 +46,7 @@ const Policy = () => {
             <p>We may update our Privacy Policy from time to time. Any changes will be posted on this page.</p>
 
             <h2>Contact Us</h2>
-            <p>If you have any questions or concerns about our Privacy Policy, please contact us at <Link to='mailto:contact@collegecrafters.com'>[contact@collegecrafters.com] </Link> .</p>
+            <p>If you have any questions or concerns about our Privacy Policy, please contact us at <Link to='mailto:contact@blinkcartsupport.com'>[contact@blinkcartsupport.com] </Link> .</p>
           </div>
         </div>
       </div>

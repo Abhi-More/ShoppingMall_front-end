@@ -5,9 +5,10 @@ import toast from "react-hot-toast";
 import { useCartCount } from "../../ContextApi/Cart";
 
 import { Button, Modal } from "antd";
+import { useInfo } from "../../ContextApi/ContextApi";
 const Electronics = () => {
   const [CartCount, setCartCount] = useCartCount();
-
+  const [user,setUser]=useInfo()
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -58,7 +59,7 @@ const Electronics = () => {
   const getProduct = async (productId) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8080/product/${productId}`
+        `http://localhost:8080/product/get/${productId}`
       );
 
       console.log(data);
@@ -78,6 +79,10 @@ const Electronics = () => {
       .post(`http://localhost:8080/order/add`, {
         ...orders,
         productId: ProductDetail.id,
+      },{
+        headers: {
+          Authorization: `Bearer ${user[1]}`,
+        },
       })
       .then((res) => {
         if (res.status === 200) {
@@ -96,7 +101,7 @@ const Electronics = () => {
     getProduct();
   }, [CartCount]);
   return (
-    <Layout title={"ShoppingMall- Shop Now"}>
+    <Layout title={"Electronic's Category- Shop Now"}>
       <div className="col-md-12 order-md-2 order-1 pt-2">
         <h1 className="text-center">Electronics Category</h1>
         <hr />

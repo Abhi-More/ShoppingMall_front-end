@@ -58,7 +58,7 @@ const AddEmployee = () => {
   };
 
   return (
-    <Layout>
+    <Layout title={"Add Employee"}>
       <div
         className="container mt-5 py-3"
         style={{ width: "850px", padding: "0px 50px", background: "rgb(234 234 234)"}}

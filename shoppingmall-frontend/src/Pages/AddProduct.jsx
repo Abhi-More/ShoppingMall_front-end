@@ -76,7 +76,7 @@ const AddProduct = () => {
   };
 
   return (
-    <Layout>
+    <Layout title={"Add Product"}>
       <div
         className="container mt-5 py-3 px-5"
         style={{

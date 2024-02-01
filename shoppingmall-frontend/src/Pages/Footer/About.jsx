@@ -4,7 +4,7 @@ import AboutPic from '/about.jpg'
 import '../../assets/css/Footer.css'
 const About = () => {
   return (
-    <Layout title={"About us - ShoppingMall"}>
+    <Layout title={"About us - BlinkCart"}>
       <div className="row contact_us">
         <div className="col-md-5">
           <img src={AboutPic} alt="contactus" style={{ width: "100%"}} />
@@ -15,8 +15,8 @@ const About = () => {
           <section>
             <h2>Our Mission</h2>
             <p>
-              At CollegeCrafters, we are on a mission to simplify the college experience by providing a seamless platform
-              for students to access a wide range of college-related essentials. From stationery to uniforms, we've got you covered.
+            At BlinkCart, we are committed to simplifying the shopping experience by providing a seamless platform for users to access a diverse range of products. Whether you're looking for the latest fashion trends or essential electronics, BlinkCart has it all.
+
             </p>
           </section>
 
@@ -24,16 +24,14 @@ const About = () => {
             <h2>What We Offer</h2>
             <h3>Daily Essentials</h3>
             <p>
-              Discover a curated collection of high-quality stationery and college uniforms tailored to meet the diverse needs
-              of college students. We understand the importance of having the right tools for success, and our products are designed
-              to enhance your academic journey.
+            Discover a curated collection of high-quality products tailored to meet the diverse needs of our customers. From fashion to electronics, BlinkCart offers a wide range of essentials to enhance your shopping experience.
+
             </p>
 
             <h3>Services</h3>
             <p>
-              Say goodbye to the hassle of finding a nearby copy center. With our Xerox services, you can conveniently upload
-              your PDF documents and receive high-quality photocopies at your desired location. It's quick, easy, and designed
-              to save you time.
+            At BlinkCart, we focus on delivering an exceptional shopping experience. We strive to offer top-notch customer service and support.
+
             </p>
           </section>
 

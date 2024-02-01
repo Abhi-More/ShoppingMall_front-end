@@ -17,7 +17,6 @@ const CartPage = () => {
         Authorization: `Bearer ${user[1]}`,
       },
     });
-    console.log("ha data card page", data);
     setCart(data);
   };
   useEffect(() => {
@@ -32,14 +31,11 @@ const CartPage = () => {
       cart?.map((item, index) => {
         count = index + 1;
         total = total + item.product.price;
-        console.log();
       });
       setcartCount(count);
-      console.log("cart count", cartCount);
-      console.log(total);
       return Math.round(total);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -57,14 +53,12 @@ const CartPage = () => {
 
       localStorage.setItem("cartCount", setcartCount(cartCount - 1));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const handlePayment = async () => {
     try {
-      // console.log("payment token",user[0]);
-      console.log(userId);
       await axios.put(`http://localhost:8080/order/${userId}`,{},
       {
         headers: {
@@ -75,7 +69,7 @@ const CartPage = () => {
       
       getPreviousPendingOrder();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

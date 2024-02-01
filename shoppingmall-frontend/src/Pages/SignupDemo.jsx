@@ -43,7 +43,7 @@ const SignupDemo = () => {
     }
     if (isvalid) {
       toast.success("Signup successfully login please !!");
-      navigate("/");
+      navigate("/login");
     }
   };
 

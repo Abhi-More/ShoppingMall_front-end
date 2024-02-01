@@ -52,7 +52,7 @@ const EmployeeDetails = () => {
         }
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
       });
     if (!isvalid) {
       toast.success("Employee delete successfully");
@@ -71,7 +71,7 @@ const EmployeeDetails = () => {
 
   return (
     <>
-      <Layout>
+      <Layout title={"Employee Details"}>
         <center className="pt-3">
           {" "}
           <button

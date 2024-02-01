@@ -4,9 +4,10 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useCartCount } from "../../ContextApi/Cart";
 import { Button, Modal } from "antd";
+import { useInfo } from "../../ContextApi/ContextApi";
 const Women = () => {
   const [CartCount, setCartCount] = useCartCount();
-
+  const [user,setUser]=useInfo()
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -58,7 +59,7 @@ const Women = () => {
   const getProduct = async (productId) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8080/product/${productId}`
+        `http://localhost:8080/product/get/${productId}`
       );
 
       console.log(data);
@@ -80,6 +81,10 @@ const Women = () => {
       .post(`http://localhost:8080/order/add`, {
         ...orders,
         productId: ProductDetail.id,
+      },{
+        headers: {
+          Authorization: `Bearer ${user[1]}`,
+        },
       })
       .then((res) => {
         if (res.status === 200) {
@@ -100,7 +105,7 @@ const Women = () => {
   }, [CartCount]);
 
   return (
-    <Layout title={"ShoppingMall- Shop Now"}>
+    <Layout title={"Women's Category- Shop Now"}>
       {/* <div className="row mt-3"> */}
 
       <div className="col-md-12 order-md-2 order-1 pt-2">

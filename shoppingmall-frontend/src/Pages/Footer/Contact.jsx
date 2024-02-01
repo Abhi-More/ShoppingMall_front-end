@@ -25,7 +25,7 @@ const Contact = () => {
           <p className="text-justify mt-2">
             Any Query and Info about Product..Feel free to reach us, We're 24X7 available
           </p>
-          <p className="mt-3"><Link className='btn btn-outline-dark' onClick={handleMailtoClick}><BiMailSend /></Link> : team7.ecommerce@gmail.com</p>
+          <p className="mt-3"><Link className='btn btn-outline-dark' onClick={handleMailtoClick}><BiMailSend /></Link> : team5.ecommerce@gmail.com</p>
           <p className="mt-3"><Link className='btn btn-outline-dark'><BiPhoneCall /></Link> : 012-345678910</p>
           <p className="mt-3"><Link to='' className='btn btn-outline-dark'><BiSupport /></Link> : 1800-0000-0000</p>
         </div>

@@ -82,7 +82,7 @@ const ManageProduct = () => {
   };
   return (
     <>
-      <Layout>
+      <Layout title={"Manage Product"}>
         <center className="pt-3">
           {" "}
           <button

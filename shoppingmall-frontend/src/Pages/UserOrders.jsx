@@ -5,20 +5,57 @@ import { useInfo } from "../ContextApi/ContextApi";
 const UserOrders = () => {
   const [orders, setorders] = useState([]);
   const [user,setUser]=useInfo()
+  const [userDetails,setUserDetails]=useState({
+    name: "",
+    id: "",
+    email: "",
+    roles: "",
+  })
+  // const [userDetails,setUserDetails]=useState()
+  
   const allproducts = async () => {
-    const data = await axios.get(`http://localhost:8080/order/all`,
+    const userUrl= `http://localhost:8080/order/${userDetails.roles==="USER"?userDetails.id:"all"}`
+    const data = await axios.get(userUrl,
     {
       headers: {
         Authorization: `Bearer ${user[1]}`,
       },
     });
-    console.log(data.data);
+    // console.log(data.data);
     setorders(data.data);
   };
 
+  const getuser=async()=>{
+    const {data}= await axios.get(`http://localhost:8080/user/${user[0].id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${user[1]}`,
+      },
+    })
+    setUserDetails({
+      name:data.name,
+      id:data.id,
+      email:data.email,
+      roles:data.roles,
+    });
+    // console.log("data",data.email);
+    console.log("userdetail",userDetails);
+  }
+
+  // useEffect(() => {
+  //   allproducts();
+  //   getuser()
+  //   console.log(userUrl);
+  // }, [user]);
+
+  useEffect(() => {
+    getuser();
+  }, [user]);
+
   useEffect(() => {
     allproducts();
-  }, []);
+    console.log("userDetails", userDetails);
+  }, [userDetails]);
 
   return (
     <>

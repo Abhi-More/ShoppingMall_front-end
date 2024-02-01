@@ -8,18 +8,54 @@ import toast from "react-hot-toast";
 import { useCartCount } from "../ContextApi/Cart";
 import { Badge } from "antd";
 import "../assets/css/HeaderStyle.css";
+import { useEffect, useState } from "react";
+import { useInfo } from "../ContextApi/ContextApi";
+import axios from "axios";
 const Header = () => {
   const [cartCount, setCartCount] = useCartCount();
-
+  const [user,setUser]=useInfo()
   const navigate = useNavigate();
+  const [username,setUsername]=useState("USER")
 
-  const userType = "admin";
+  const [userType,setUserType] =useState()
 
   const handleLogout = () => {
-    // Logic
+    setUser(null)
     navigate("/");
     toast.success("Logout Successfully");
   };
+
+  const getUser=async()=>{
+    const response = await axios.get(
+      `http://localhost:8080/user/${user[0].id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user[1]}`,
+        },
+      }
+    );
+    // console.log("Role: ",response.data.roles);
+    setUserType(response.data.roles)
+    // console.log("Response data",response.data.name);
+    setUsername(response.data.name)
+  }
+
+  useEffect(()=>{
+
+    console.log(user);
+    let status;
+    if(user.length==0){
+      status="Null"
+    }else{
+      status="Not Null"
+    }
+    console.log(status);
+
+    if(user){
+      getUser()
+      // console.log("Username",response.data.name);
+    }
+  },[user])
 
   return (
     <>
@@ -37,13 +73,13 @@ const Header = () => {
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <Link to="/homepage" className="navbar-brand"   style={{ fontSize: '18px' }}>
-              <IoSchool /> ShoppingMall
+            <Link to="/" className="navbar-brand"   style={{ fontSize: '18px' }}>
+              <IoSchool /> BlinkCart
             </Link>
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 mx-5">
               {/* <SearchInput /> */}
               <li className="nav-item mx-1">
-                <NavLink to="/homepage" className="nav-link btn-2">
+                <NavLink to="/" className="nav-link btn-2">
                   Home
                 </NavLink>
               </li>
@@ -58,7 +94,7 @@ const Header = () => {
                 </Link>
                 <ul className="dropdown-menu"  style={{ fontSize: '15px' }}>
                   <li>
-                    <Link className="dropdown-item" to="/homepage">
+                    <Link className="dropdown-item" to="/">
                       {" "}
                       All Products
                     </Link>
@@ -86,7 +122,8 @@ const Header = () => {
                   </li>
                 </ul>
               </li>
-
+              {user.length > 0 ? (
+            <>
               <li className="nav-item dropdown mx-1">
                 <NavLink
                   className="nav-link dropdown-toggle"
@@ -95,7 +132,7 @@ const Header = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  User
+                {username}
                 </NavLink>
                 <ul className="dropdown-menu"   style={{ fontSize: '15px' }}>
                   <li>
@@ -124,8 +161,7 @@ const Header = () => {
                   <li>
                     <NavLink
                       to={`/userOrder`}
-                      className={`dropdown-item ${userType === "admin" ? "d-block" : "d-none"
-                        }`}
+                      className={'dropdown-item'}
                     >
                       Order history
                     </NavLink>
@@ -133,7 +169,7 @@ const Header = () => {
                   <li>
                     <NavLink
                       onClick={handleLogout}
-                      to="/"
+                      to="/login"
                       className="dropdown-item"
                     >
                       Logout
@@ -151,6 +187,14 @@ const Header = () => {
                   </NavLink>
                 </Badge>
               </li>
+              </>
+          ) : (
+            <li className="nav-item mx-1">
+              <NavLink to="/login" className="nav-link btn-2">
+                Login
+              </NavLink>
+            </li>
+            )}
             </ul>
           </div>
         </div>

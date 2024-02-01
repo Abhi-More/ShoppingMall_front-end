@@ -38,15 +38,15 @@ const LoginDemo = () => {
         setUser([decodedToken,response.data])
         // console.log(response.data);
         // setUserId(decodedToken.id);
-        navigate("/homepage");
+        navigate("/");
       } else {
         toast.error("Login failed. Please check your credentials.");
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {
       console.error("Error during login:", error.message);
       toast.error("Invalid credential");
-      navigate("/");
+      navigate("/login");
     }
 
     
