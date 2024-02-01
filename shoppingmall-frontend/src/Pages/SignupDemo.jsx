@@ -35,7 +35,7 @@ const SignupDemo = () => {
           email: email,
           password: password,
           gender: gender,
-          role: "USER"
+          roles: "USER"
         })
         console.log(data);
         isvalid = true;

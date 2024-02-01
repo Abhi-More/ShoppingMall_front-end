@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import axios from "axios";
+import { useInfo } from "../ContextApi/ContextApi";
 const UserOrders = () => {
   const [orders, setorders] = useState([]);
+  const [user,setUser]=useInfo()
   const allproducts = async () => {
-    const data = await axios.get(`http://localhost:8080/order/all`);
+    const data = await axios.get(`http://localhost:8080/order/all`,
+    {
+      headers: {
+        Authorization: `Bearer ${user[1]}`,
+      },
+    });
     console.log(data.data);
     setorders(data.data);
   };

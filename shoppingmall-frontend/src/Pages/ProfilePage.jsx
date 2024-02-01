@@ -15,8 +15,9 @@ const ProfilePage = () => {
     contactNo: "",
     address: "",
   });
-  const userId = user[0].id;
+  
   const getSingleUser = async () => {
+    const userId = user[0].id;
     const data = await axios.get(`http://localhost:8080/user/${userId}`, {
       headers: {
         Authorization: `Bearer ${user[1]}`,

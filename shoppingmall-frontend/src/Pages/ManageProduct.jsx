@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 import { BiSolidEditAlt } from "react-icons/bi";
 import { RiDeleteBack2Fill } from "react-icons/ri";
+import { useInfo } from "../ContextApi/ContextApi";
 
 
 const ManageProduct = () => {
   const [products, setproducts] = useState([]);
+  const [user,setUser]=useInfo()
   const navigate = useNavigate();
   const allproducts = async () => {
     const data = await axios.get(`http://localhost:8080/product/allproducts`);
@@ -27,13 +29,23 @@ const ManageProduct = () => {
   });
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:8080/product/delete/${id}`);
+    await axios.delete(`http://localhost:8080/product/delete/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${user[1]}`,
+      },
+    });
     allproducts();
   };
 
   const handleEdit = async (id) => {
     const sigleProduct = await axios.get(
-      `http://localhost:8080/product/${id}`
+      `http://localhost:8080/product/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user[1]}`,
+        },
+      }
     );
     delete sigleProduct.data.image;
   };

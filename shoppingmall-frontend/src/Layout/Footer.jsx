@@ -20,7 +20,7 @@ const Footer = () => {
           <li className="list-inline-item"><Link to='/contact'>Contact</Link></li>
           <li className="list-inline-item"><Link to='/policy'>Privacy Policy</Link></li>
         </ul>
-        <p className="copyright">All right Reserved &copy; Team 7</p>
+        <p className="copyright">All right Reserved &copy; Team 5</p>
       </footer>
     </div>
 

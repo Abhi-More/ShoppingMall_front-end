@@ -3,13 +3,20 @@ import Layout from "../Layout/Layout";
 import { useCartCount } from "../ContextApi/Cart";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useInfo } from "../ContextApi/ContextApi";
 
 const CartPage = () => {
+  const [user,setUser]=useInfo()
   const [cartCount, setcartCount] = useCartCount();
   const [cart, setCart] = useState([]);
-  const userId = 1;
+  const userId = user[0].id;
   const getPreviousPendingOrder = async () => {
-    const { data } = await axios.get(`http://localhost:8080/order/${userId}/pending`);
+    const { data } = await axios.get(`http://localhost:8080/order/${userId}/pending`,
+    {
+      headers: {
+        Authorization: `Bearer ${user[1]}`,
+      },
+    });
     console.log("ha data card page", data);
     setCart(data);
   };
@@ -39,7 +46,12 @@ const CartPage = () => {
   //remove from cart
   const removeCartItem = async (orderId) => {
     try {
-      await axios.delete(`http://localhost:8080/order/delete/${orderId}`);
+      await axios.delete(`http://localhost:8080/order/delete/${orderId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user[1]}`,
+        },
+      });
       toast.success("order removed successfully!");
       getPreviousPendingOrder();
 
@@ -51,8 +63,16 @@ const CartPage = () => {
 
   const handlePayment = async () => {
     try {
-      await axios.put(`http://localhost:8080/order/${userId}`);
+      // console.log("payment token",user[0]);
+      console.log(userId);
+      await axios.put(`http://localhost:8080/order/${userId}`,{},
+      {
+        headers: {
+          Authorization: `Bearer ${user[1]}`,
+        },
+      });
       toast.success("Payment Completed Successfully");
+      
       getPreviousPendingOrder();
     } catch (error) {
       console.log(error);

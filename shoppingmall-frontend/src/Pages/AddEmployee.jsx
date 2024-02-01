@@ -3,8 +3,11 @@ import React, { useState } from "react";
 
 import axios from "axios";
 import toast from "react-hot-toast";
-
+import { useInfo } from "../ContextApi/ContextApi";
+import { useNavigate } from "react-router-dom";
 const AddEmployee = () => {
+  const [user,setUser]=useInfo()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,10 +39,16 @@ const AddEmployee = () => {
       toast.error("Please fill all fields!");
     } else {
       const response = await axios
-        .post("http://localhost:8080/employee", formData)
+        .post("http://localhost:8080/employee", formData,
+        {
+          headers: {
+            Authorization: `Bearer ${user[1]}`,
+          },
+        })
         .then((res) => {
           if (res.status === 201) {
             toast.success("Employee Added");
+            navigate('/employee')
           }
         })
         .catch((error) => {

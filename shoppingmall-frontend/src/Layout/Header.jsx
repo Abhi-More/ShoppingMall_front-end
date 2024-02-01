@@ -37,7 +37,7 @@ const Header = () => {
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <Link to="/homepage" className="navbar-brand">
+            <Link to="/homepage" className="navbar-brand"   style={{ fontSize: '18px' }}>
               <IoSchool /> ShoppingMall
             </Link>
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 mx-5">
@@ -56,7 +56,7 @@ const Header = () => {
                 >
                   Categories
                 </Link>
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu"  style={{ fontSize: '15px' }}>
                   <li>
                     <Link className="dropdown-item" to="/homepage">
                       {" "}
@@ -97,7 +97,7 @@ const Header = () => {
                 >
                   User
                 </NavLink>
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu"   style={{ fontSize: '15px' }}>
                   <li>
                     <NavLink to={`/profile`} className="dropdown-item">
                       Profile
@@ -106,9 +106,8 @@ const Header = () => {
                   <li>
                     <NavLink
                       to={`/employee`}
-                      className={`dropdown-item ${
-                        userType === "admin" ? "d-block" : "d-none"
-                      }`}
+                      className={`dropdown-item ${userType === "admin" ? "d-block" : "d-none"
+                        }`}
                     >
                       Manage Employees
                     </NavLink>
@@ -116,9 +115,8 @@ const Header = () => {
                   <li>
                     <NavLink
                       to={`/product`}
-                      className={`dropdown-item ${
-                        userType === "admin" ? "d-block" : "d-none"
-                      }`}
+                      className={`dropdown-item ${userType === "admin" ? "d-block" : "d-none"
+                        }`}
                     >
                       Manage Products
                     </NavLink>
@@ -126,9 +124,8 @@ const Header = () => {
                   <li>
                     <NavLink
                       to={`/userOrder`}
-                      className={`dropdown-item ${
-                        userType === "admin" ? "d-block" : "d-none"
-                      }`}
+                      className={`dropdown-item ${userType === "admin" ? "d-block" : "d-none"
+                        }`}
                     >
                       Order history
                     </NavLink>

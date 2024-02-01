@@ -2,8 +2,12 @@ import Layout from "../Layout/Layout";
 import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-
+import { useInfo } from "../ContextApi/ContextApi";
+import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
+  const [user,setUser]=useInfo()
+  const navigate = useNavigate();
+
   const [productData, setProductData] = useState({
     name: "",
     category: "",
@@ -58,10 +62,12 @@ const AddProduct = () => {
         .post("http://localhost:8080/product/addproduct", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${user[1]}`,
           },
         })
         .then((res) => {
           if (res.status === 200) toast.success("Product Added");
+          navigate('/product')
         })
         .catch((err) => {
           toast.error("Error in adding product");

@@ -1,18 +1,16 @@
 import { Link } from "react-router-dom";
 import LoginPic from "../assets/images/signup-image.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from 'axios'
 import {jwtDecode} from 'jwt-decode';
-import { useCartCount } from "../ContextApi/Cart";
 import {useInfo} from "../ContextApi/ContextApi"
 const LoginDemo = () => {
   const [email, Setemail] = useState("");
   const [password, Setpassword] = useState("");
   const navigate = useNavigate();
   const [user,setUser]=useInfo()
-  const [cartCount, setCartCount] = useCartCount();
 
   const signIn = async (e) => {
     e.preventDefault();
@@ -51,7 +49,12 @@ const LoginDemo = () => {
       navigate("/");
     }
 
+    
+
   };
+  useEffect(()=>{
+    console.log(user);
+  },[])
   return (
     <div>
       <div className="main">

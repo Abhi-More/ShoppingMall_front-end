@@ -6,11 +6,18 @@ import { useNavigate } from "react-router-dom";
 import { BiSolidEditAlt } from "react-icons/bi";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { MdPersonAddAlt1 } from "react-icons/md";
+import { useInfo } from "../ContextApi/ContextApi";
 const EmployeeDetails = () => {
   const [employees, setEmployees] = useState([]);
   const navigate = useNavigate();
+  const [user,setUser]=useInfo()
   const getEmployees = async () => {
-    const data = await axios.get(`http://localhost:8080/employee/all`);
+    const data = await axios.get(`http://localhost:8080/employee/all`,
+    {
+      headers: {
+        Authorization: `Bearer ${user[1]}`,
+      },
+    });
     setEmployees(data.data);
   };
 
@@ -30,7 +37,12 @@ const EmployeeDetails = () => {
   const handleDelete = async (id) => {
     let isvalid = true;
     const resp = await axios
-      .delete(`http://localhost:8080/employee/${id}`)
+      .delete(`http://localhost:8080/employee/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user[1]}`,
+        },
+      })
       .then((res) => {
         if (res.status === 200) {
           isvalid = true;
