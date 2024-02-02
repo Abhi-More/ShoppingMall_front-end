@@ -42,15 +42,15 @@ const AddEmployee = () => {
     } else {
       await axios
         .post(
-          "http://localhost:8080/employee",
+          "http://localhost:8080/employee",formData,
           {
             headers: {
               Authorization: `Bearer ${user[1]}`,
             },
 
             withCredentials: false,
-          },
-          formData
+          }
+          
         )
         .then((res) => {
           if (res.status === 201) {
@@ -59,6 +59,7 @@ const AddEmployee = () => {
           }
         })
         .catch(() => {
+          // console.log();
           toast.error("Try using different email");
         });
     }
