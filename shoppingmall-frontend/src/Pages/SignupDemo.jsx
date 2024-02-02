@@ -1,9 +1,9 @@
-import "../assets/css/login1.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SigninPic from "../assets/images/signin-image.jpg";
 import toast from "react-hot-toast";
 import axios from "axios";
+import "../assets/css/login1.css";
 const SignupDemo = () => {
   const [username, setusername] = useState("");
   const [email, setemail] = useState("");
@@ -14,6 +14,11 @@ const SignupDemo = () => {
   const [gender, setGender] = useState("Gender");
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const signupMe = () => {
     let isvalid = false;
     if (
@@ -21,6 +26,10 @@ const SignupDemo = () => {
       (password === "") | (retypepass === "")
     ) {
       toast.error("Please fill all fields!");
+    }else if (!validateEmail(email)) {
+      toast.error("Please enter a valid email address!");
+    } else if (password.length < 8) {
+      toast.error("Password should be at least 8 characters long!");
     } else {
       if (password !== retypepass) {
         toast.error("Password does not match Retype Password!");

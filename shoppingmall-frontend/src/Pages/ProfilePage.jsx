@@ -84,7 +84,7 @@ const ProfilePage = () => {
   };
   useEffect(() => {
     getSingleUser();
-  }, [userDetails]);
+  }, []);
   return (
     <>
       <Layout title={"Profile Page"}>
