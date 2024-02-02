@@ -7,16 +7,31 @@ import { BiSolidEditAlt } from "react-icons/bi";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { MdPersonAddAlt1 } from "react-icons/md";
 import { useInfo } from "../ContextApi/ContextApi";
+
 const EmployeeDetails = () => {
   const [employees, setEmployees] = useState([]);
+  const [user, setUser] = useInfo([]);
+
   const navigate = useNavigate();
-  const [user,setUser]=useInfo()
+
+  const [updateUserDetails, setUpdateUserDetails] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    Designation: "",
+    salary: "",
+    city: "",
+    state: "",
+    country: "",
+  });
   const getEmployees = async () => {
-    const data = await axios.get(`http://localhost:8080/employee/all`,
-    {
+    const data = await axios.get(`http://localhost:8080/employee/all`, {
       headers: {
         Authorization: `Bearer ${user[1]}`,
       },
+
+      withCredentials: false,
     });
     setEmployees(data.data);
   };
@@ -25,20 +40,69 @@ const EmployeeDetails = () => {
     getEmployees();
   }, []);
 
-  const [updateUserDetails, setUpdateUserDetails] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    city: "",
-    state: "",
-    country: "",
-  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUpdateUserDetails((prevupdateUserDetails) => ({
+      ...prevupdateUserDetails,
+      [name]: value,
+    }));
+  };
+
+  const [EmpId, setEmpId] = useState("");
+  const [dob, setdob] = useState();
+
+  const handleEdit = async (id) => {
+    setEmpId(id);
+    const { data } = await axios.get(`http://localhost:8080/employee/${id}`, {
+      headers: {
+        Authorization: `Bearer ${user[1]}`,
+      },
+
+      withCredentials: false,
+    });
+    setUpdateUserDetails({
+      firstName: data.name.split(" ")[0],
+      lastName: data.name.split(" ")[1],
+      email: data.email,
+      phoneNumber: data.contactNo,
+      Designation: data.designation,
+      salary: data.salary,
+      city: data.address.split(" ")[0],
+      state: data.address.split(" ")[1],
+      country: data.address.split(" ")[1],
+    });
+    setdob(data.dateOfJoining);
+  };
+
+  const handleSubmit = async () => {
+    const newUpdateUser = {
+      name: updateUserDetails.firstName + " " + updateUserDetails.lastName,
+      email: updateUserDetails.email,
+      contactNo: updateUserDetails.phoneNumber,
+      address:
+        updateUserDetails.city +
+        ", " +
+        updateUserDetails.state +
+        ", " +
+        updateUserDetails.country,
+      designation: updateUserDetails.Designation,
+      salary: updateUserDetails.salary,
+      dateOfJoining: dob,
+    };
+    console.log({ newUpdateUser });
+    await axios.put(`http://localhost:8080/employee/${EmpId}`, newUpdateUser, {
+      headers: {
+        Authorization: `Bearer ${user[1]}`,
+      },
+    });
+    toast.success(`Employee Id ${EmpId} updated succefully!`);
+    getEmployees();
+  };
+
   const handleDelete = async (id) => {
     let isvalid = true;
-    const resp = await axios
-      .delete(`http://localhost:8080/employee/${id}`,
-      {
+    await axios
+      .delete(`http://localhost:8080/employee/${id}`, {
         headers: {
           Authorization: `Bearer ${user[1]}`,
         },
@@ -63,12 +127,6 @@ const EmployeeDetails = () => {
     getEmployees();
   };
 
-  const [EmpId, setEmpId] = useState("");
-  const handleEdit = (id) => {
-    setEmpId(id);
-  };
-
-
   return (
     <>
       <Layout title={"Employee Details"}>
@@ -76,7 +134,9 @@ const EmployeeDetails = () => {
           {" "}
           <button
             className="my-3 btn btn-outline-success"
-            onClick={() => {navigate("/addEmployee")}}
+            onClick={() => {
+              navigate("/addEmployee");
+            }}
           >
             <MdPersonAddAlt1 /> Add Employee
           </button>
@@ -164,11 +224,8 @@ const EmployeeDetails = () => {
                       placeholder="First name"
                       aria-label="First name"
                       name="firstName"
-                      value={
-                        !employees[EmpId - 1]
-                          ? " "
-                          : employees[EmpId - 1].name.split(" ")[0]
-                      }
+                      value={updateUserDetails.firstName}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="col">
@@ -178,11 +235,8 @@ const EmployeeDetails = () => {
                       placeholder="Last name"
                       aria-label="Last name"
                       name="lastName"
-                      value={
-                        !employees[EmpId - 1]
-                          ? " "
-                          : employees[EmpId - 1].name.split(" ")[1]
-                      }
+                      value={updateUserDetails.lastName}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -194,9 +248,8 @@ const EmployeeDetails = () => {
                       placeholder="Email"
                       aria-label="First name"
                       name="email"
-                      value={
-                        !employees[EmpId - 1] ? "" : employees[EmpId - 1].email
-                      }
+                      value={updateUserDetails.email}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -205,14 +258,11 @@ const EmployeeDetails = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Phone number"
+                      placeholder="phoneNumber"
                       aria-label="First name"
                       name="phoneNumber"
-                      value={
-                        !employees[EmpId - 1]
-                          ? " "
-                          : employees[EmpId - 1].phNumber
-                      }
+                      value={updateUserDetails.phoneNumber}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -221,14 +271,24 @@ const EmployeeDetails = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Position"
+                      placeholder="designation"
                       aria-label="First name"
-                      name="phoneNumber"
-                      value={
-                        !employees[EmpId - 1]
-                          ? " "
-                          : employees[EmpId - 1].position
-                      }
+                      name="Designation"
+                      value={updateUserDetails.Designation}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="my-2 row">
+                  <div className="col">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Salary"
+                      aria-label="First name"
+                      name="salary"
+                      value={updateUserDetails.salary}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -240,11 +300,8 @@ const EmployeeDetails = () => {
                       placeholder="City"
                       aria-label="First name"
                       name="city"
-                      value={
-                        !employees[EmpId - 1]
-                          ? " "
-                          : employees[EmpId - 1].address.split(",")[0]
-                      }
+                      value={updateUserDetails.city}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="col">
@@ -254,11 +311,8 @@ const EmployeeDetails = () => {
                       placeholder="State"
                       aria-label="Last name"
                       name="state"
-                      value={
-                        !employees[EmpId - 1]
-                          ? " "
-                          : employees[EmpId - 1].address.split(",")[1]
-                      }
+                      value={updateUserDetails.state}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="col">
@@ -268,11 +322,8 @@ const EmployeeDetails = () => {
                       placeholder="country"
                       aria-label="Last name"
                       name="country"
-                      value={
-                        !employees[EmpId - 1]
-                          ? " "
-                          : employees[EmpId - 1].address.split(",")[2]
-                      }
+                      value={updateUserDetails.country}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -289,6 +340,7 @@ const EmployeeDetails = () => {
                   type="button"
                   className="mx-5 btn btn-primary"
                   data-bs-dismiss="modal"
+                  onClick={handleSubmit}
                 >
                   Save changes
                 </button>

@@ -6,17 +6,19 @@ import toast from "react-hot-toast";
 import { useInfo } from "../ContextApi/ContextApi";
 
 const CartPage = () => {
-  const [user,setUser]=useInfo()
+  const [user, setUser] = useInfo();
   const [cartCount, setcartCount] = useCartCount();
   const [cart, setCart] = useState([]);
   const userId = user[0].id;
   const getPreviousPendingOrder = async () => {
-    const { data } = await axios.get(`http://localhost:8080/order/${userId}/pending`,
-    {
-      headers: {
-        Authorization: `Bearer ${user[1]}`,
-      },
-    });
+    const { data } = await axios.get(
+      `http://localhost:8080/order/${userId}/pending`,
+      {
+        headers: {
+          Authorization: `Bearer ${user[1]}`,
+        },
+      }
+    );
     setCart(data);
   };
   useEffect(() => {
@@ -42,8 +44,7 @@ const CartPage = () => {
   //remove from cart
   const removeCartItem = async (orderId) => {
     try {
-      await axios.delete(`http://localhost:8080/order/delete/${orderId}`,
-      {
+      await axios.delete(`http://localhost:8080/order/delete/${orderId}`, {
         headers: {
           Authorization: `Bearer ${user[1]}`,
         },
@@ -59,14 +60,17 @@ const CartPage = () => {
 
   const handlePayment = async () => {
     try {
-      await axios.put(`http://localhost:8080/order/${userId}`,{},
-      {
-        headers: {
-          Authorization: `Bearer ${user[1]}`,
-        },
-      });
+      await axios.put(
+        `http://localhost:8080/order/${userId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user[1]}`,
+          },
+        }
+      );
       toast.success("Payment Completed Successfully");
-      
+
       getPreviousPendingOrder();
     } catch (error) {
       console.error(error);
@@ -78,11 +82,10 @@ const CartPage = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-4 w-100">
-            <h1 className="text-center bg-light p-2 mb-1">{`Hello User`}</h1>
-            <h4 className="text-center">
+            <h4 className="text-center my-5">
               {cart?.length
-                ? `You have ${cart.length} items in your cart`
-                : "Your Cart is Empty"}
+                ? `You have ${cart.length} items in your cart.`
+                : "Your Cart is Empty."}
             </h4>
           </div>
           <hr />

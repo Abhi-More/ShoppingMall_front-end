@@ -4,7 +4,7 @@ const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
   // const [cartCount, setcartCount] = usecartCount();
-  const [cartCount, setcartCount] = useState();
+  const [cartCount, setcartCount] = useState(0);
 
   useEffect(() => {
     let existingCartCount = localStorage.getItem("cartCount");

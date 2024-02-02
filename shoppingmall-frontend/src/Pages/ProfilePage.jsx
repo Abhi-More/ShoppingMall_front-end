@@ -4,49 +4,44 @@ import { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import axios from "axios";
 import { useCartCount } from "../ContextApi/Cart";
-import {useInfo} from "../ContextApi/ContextApi"
+import { useInfo } from "../ContextApi/ContextApi";
 const ProfilePage = () => {
-  const [EmpId, setEmpId] = useState();
-  const cart=useCartCount()
-  const [user,setUser]=useInfo([])
+  const [userId, setuserId] = useState();
+  const cart = useCartCount();
+  const [user, setUser] = useInfo([]);
+  const [gender, setGender] = useState("MALE");
+
   const [userDetails, setUserDetails] = useState({
     name: "",
     email: "",
     contactNo: "",
     address: "",
   });
-  
+
+  const [updateUserDetails, setUpdateUserDetails] = useState({
+    name: "",
+    email: "",
+    contactNo: "",
+    address: "",
+  });
   const getSingleUser = async () => {
-    const userId = user[0].id;
-    const data = await axios.get(`http://localhost:8080/user/${userId}`, {
+    const data = await axios.get(`http://localhost:8080/user/${user[0].id}`, {
       headers: {
         Authorization: `Bearer ${user[1]}`,
       },
 
       withCredentials: false,
     });
-    console.log("user : ",data);
-    setEmpId(data.data.empId);
-    delete data.data.empId;
-    delete data.data.dateOfJoining;
-    delete data.data.designation;
-    delete data.data.password;
-    delete data.data.salary;
+    setGender(data.data.gender);
 
-    setUserDetails(data.data);
+    setUserDetails({
+      name: data.data.name,
+      email: data.data.email,
+      contactNo: data.data.contactNo,
+      address: data.data.address,
+    });
   };
-  useEffect(() => {
-    getSingleUser();
-  }, []);
-  const [updateUserDetails, setUpdateUserDetails] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    city: "",
-    state: "",
-    country: "",
-  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdateUserDetails((prevupdateUserDetails) => ({
@@ -54,52 +49,42 @@ const ProfilePage = () => {
       [name]: value,
     }));
   };
-  const handleSubmit = async () => {
-    setUserDetails({
-      ...updateUserDetails,
-      fullName: updateUserDetails.firstName + " " + updateUserDetails.lastName,
-      address:
-        updateUserDetails.city +
-        ", " +
-        updateUserDetails.state +
-        ", " +
-        updateUserDetails.country,
+  const editUser = () => {
+    setUpdateUserDetails({
+      name: userDetails.name,
+      email: userDetails.email,
+      contactNo: userDetails.contactNo,
+      address: userDetails.address,
     });
-
+  };
+  const handleSubmit = async () => {
     const newUpdateUser = {
-      name: updateUserDetails.firstName + " " + updateUserDetails.lastName,
+      name: updateUserDetails.name,
       email: updateUserDetails.email,
-      contactNo: updateUserDetails.phoneNumber,
-      address:
-        updateUserDetails.city +
-        ", " +
-        updateUserDetails.state +
-        ", " +
-        updateUserDetails.country,
+      contactNo: updateUserDetails.contactNo,
+      address: updateUserDetails.address,
     };
-    const updateUser = await axios.put(
-      `http://localhost:8080/employee/${userId}`,
-      newUpdateUser
-    );
+    await axios.put(`http://localhost:8080/user/${user[0].id}`, newUpdateUser, {
+      headers: {
+        Authorization: `Bearer ${user[1]}`,
+      },
+
+      withCredentials: false,
+    });
     getSingleUser();
   };
 
   const clearUserDetails = () => {
     setUpdateUserDetails({
-      firstName: "",
-      lastName: "",
+      name: "",
       email: "",
       phoneNumber: "",
-      city: "",
-      state: "",
-      country: "",
+      address: "",
     });
   };
-  useEffect(()=>{
-console.log(user[0]);
-console.log(user[1]);
-// console.log(user.id);
-  },[])
+  useEffect(() => {
+    getSingleUser();
+  }, [userDetails]);
   return (
     <>
       <Layout title={"Profile Page"}>
@@ -110,7 +95,7 @@ console.log(user[1]);
               <nav aria-label="breadcrumb" className="main-breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/homepage">Home</Link>
+                    <Link to="/">Home</Link>
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
                     User Profile
@@ -124,14 +109,18 @@ console.log(user[1]);
                     <div className="card-body">
                       <div className="d-flex flex-column align-items-center text-center">
                         <img
-                          src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                          src={`https://bootdey.com/img/Content/avatar/avatar${
+                            gender === "FEMALE" ? 3 : 7
+                          }.png`}
                           alt="Admin"
                           className="rounded-circle"
                           width={150}
                         />
                         <div className="mt-3">
                           <h4>{userDetails.name}</h4>
-                          <p className="text-secondary mb-1">Er.#{EmpId}</p>
+                          <p className="text-secondary mb-1">
+                            {userDetails.email}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -301,8 +290,9 @@ console.log(user[1]);
                             className="btn btn-primary"
                             data-bs-toggle="modal"
                             data-bs-target="#exampleModal"
+                            onClick={editUser}
                           >
-                            Edit
+                            Complete Profile
                           </button>
                         </div>
                         <div
@@ -336,21 +326,10 @@ console.log(user[1]);
                                     <input
                                       type="text"
                                       className="form-control"
-                                      placeholder="First name"
+                                      placeholder="Full name"
                                       aria-label="First name"
-                                      name="firstName"
-                                      value={updateUserDetails.firstName}
-                                      onChange={handleInputChange}
-                                    />
-                                  </div>
-                                  <div className="col">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Last name"
-                                      aria-label="Last name"
-                                      name="lastName"
-                                      value={updateUserDetails.lastName}
+                                      name="name"
+                                      value={updateUserDetails.name}
                                       onChange={handleInputChange}
                                     />
                                   </div>
@@ -375,8 +354,8 @@ console.log(user[1]);
                                       className="form-control"
                                       placeholder="Phone number"
                                       aria-label="First name"
-                                      name="phoneNumber"
-                                      value={updateUserDetails.phoneNumber}
+                                      name="contactNo"
+                                      value={updateUserDetails.contactNo}
                                       onChange={handleInputChange}
                                     />
                                   </div>
@@ -386,32 +365,10 @@ console.log(user[1]);
                                     <input
                                       type="text"
                                       className="form-control"
-                                      placeholder="City"
+                                      placeholder="Address"
                                       aria-label="First name"
-                                      name="city"
-                                      value={updateUserDetails.city}
-                                      onChange={handleInputChange}
-                                    />
-                                  </div>
-                                  <div className="col">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="State"
-                                      aria-label="Last name"
-                                      name="state"
-                                      value={updateUserDetails.city}
-                                      onChange={handleInputChange}
-                                    />
-                                  </div>
-                                  <div className="col">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="country"
-                                      aria-label="Last name"
-                                      name="country"
-                                      value={updateUserDetails.country}
+                                      name="address"
+                                      value={updateUserDetails.address}
                                       onChange={handleInputChange}
                                     />
                                   </div>

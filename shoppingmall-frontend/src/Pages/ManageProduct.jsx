@@ -7,10 +7,11 @@ import { BiSolidEditAlt } from "react-icons/bi";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { useInfo } from "../ContextApi/ContextApi";
 
+import toast from "react-hot-toast";
 
 const ManageProduct = () => {
   const [products, setproducts] = useState([]);
-  const [user,setUser]=useInfo()
+  const [user, setUser] = useInfo();
   const navigate = useNavigate();
   const allproducts = async () => {
     const data = await axios.get(`http://localhost:8080/product/allproducts`);
@@ -22,36 +23,44 @@ const ManageProduct = () => {
   }, []);
 
   const [updateProduct, setUpdateProduct] = useState({
-    id: "",
-    name: "",
-    category: "",
-    price: "",
+    productId: "",
+    productName: "",
+    productPrice: 0,
+    productDiscount: 0,
   });
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:8080/product/delete/${id}`,
-    {
+    await axios.delete(`http://localhost:8080/product/delete/${id}`, {
       headers: {
         Authorization: `Bearer ${user[1]}`,
       },
+
+      withCredentials: false,
     });
     allproducts();
   };
 
   const handleEdit = async (id) => {
     const sigleProduct = await axios.get(
-      `http://localhost:8080/product/${id}`,
+      `http://localhost:8080/product/get/${id}`,
       {
         headers: {
           Authorization: `Bearer ${user[1]}`,
         },
+
+        withCredentials: false,
       }
     );
     delete sigleProduct.data.image;
+    setUpdateProduct({
+      productId: sigleProduct.data.id,
+      productName: sigleProduct.data.name,
+      productPrice: sigleProduct.data.price,
+      productDiscount: sigleProduct.data.discount,
+    });
   };
 
   const handleInputChange = (e) => {
-    console.log("onchange called");
     const { name, value } = e.target;
 
     setUpdateProduct((preProductDetails) => ({
@@ -60,34 +69,60 @@ const ManageProduct = () => {
     }));
   };
 
-  const formData = new FormData();
+  const handleSubmit = async (id) => {
+    const newUpdateProduct = {
+      name: updateProduct.productName,
+      price: updateProduct.productPrice,
+      discount: updateProduct.productDiscount,
+    };
+    console.log({ newUpdateProduct });
+    await axios
+      .put(`http://localhost:8080/product/update/${id}`, newUpdateProduct, {
+        headers: {
+          Authorization: `Bearer ${user[1]}`,
+        },
 
-  formData.append("name", "Mobile");
-  formData.append("category", "Men");
-  formData.append("price", 1459);
-  formData.append("image", "");
-
-  const addNewProduct = async () => {
-    navigate("/addProduct");
-    // axios
-    //   .post(`http://localhost:8080/product/addproduct`, formData)
-    //   .then((response) => {
-    //     console.log("Response:", response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
-    // console.log("add product called");
-    // allproducts();
+        withCredentials: false,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("product update");
+        } else if (res.status === 400) {
+          toast.error("invalid input");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    allproducts();
   };
-  return (
+
+  const clearInput = () => {
+    setUpdateProduct({
+      productId: 0,
+      productName: "",
+      productPrice: 0,
+      productDiscount: 0,
+    });
+  };
+  return products.length === 0 ? (
+    <Layout>
+      <div className="text-center my-5">
+        <div className="spinner-border spinner-grow text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </Layout>
+  ) : (
     <>
       <Layout title={"Manage Product"}>
         <center className="pt-3">
           {" "}
           <button
             className="my-3 btn btn-outline-success"
-            onClick={addNewProduct}
+            onClick={() => {
+              navigate("/addProduct");
+            }}
           >
             Add Products
           </button>
@@ -98,6 +133,7 @@ const ManageProduct = () => {
                 <th scope="col">NAME</th>
                 <th scope="col">CATEGORY</th>
                 <th scope="col">PRICE</th>
+                <th scope="col">Discount</th>
                 <th scope="col">EDIT</th>
                 <th scope="col">REMOVE</th>
               </tr>
@@ -110,6 +146,7 @@ const ManageProduct = () => {
                     <td>{ele.name}</td>
                     <td>{ele.category}</td>
                     <td>{ele.price}</td>
+                    <td>{ele.discount} %</td>
                     <td>
                       <button
                         type="button"
@@ -140,7 +177,7 @@ const ManageProduct = () => {
         </center>
 
         <div
-          className="modal fade"
+          className="modal fade "
           id="exampleModal"
           tabIndex="-1"
           aria-labelledby="exampleModalLabel"
@@ -150,7 +187,7 @@ const ManageProduct = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLabel">
-                  Fill Details of Product Id {updateProduct.id}
+                  Fill Details of Product Id {updateProduct.productId}
                 </h5>
                 <button
                   type="button"
@@ -160,29 +197,15 @@ const ManageProduct = () => {
                 ></button>
               </div>
               <div className="modal-body">
-                <div className="row">
-                  <div className="col">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Product name"
-                      aria-label="First name"
-                      name="firstName"
-                      value={updateProduct.name}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-
                 <div className="my-2 row">
                   <div className="col">
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Position"
+                      placeholder="Product Name"
                       aria-label="First name"
-                      name="phoneNumber"
-                      value={updateProduct.category}
+                      name="productName"
+                      value={updateProduct.productName}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -192,10 +215,23 @@ const ManageProduct = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Position"
+                      placeholder="Product Price"
                       aria-label="First name"
-                      name="phoneNumber"
-                      value={updateProduct.price}
+                      name="productPrice"
+                      value={updateProduct.productPrice}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="my-2 row">
+                  <div className="col">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Product Discount"
+                      aria-label="First name"
+                      name="productDiscount"
+                      value={updateProduct.productDiscount}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -205,7 +241,7 @@ const ManageProduct = () => {
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  data-bs-dismiss="modal"
+                  onClick={clearInput}
                 >
                   Close
                 </button>
@@ -213,6 +249,9 @@ const ManageProduct = () => {
                   type="button"
                   className="mx-5 btn btn-primary"
                   data-bs-dismiss="modal"
+                  onClick={() => {
+                    handleSubmit(updateProduct.productId);
+                  }}
                 >
                   Save changes
                 </button>

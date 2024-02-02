@@ -8,7 +8,7 @@ import { useInfo } from "../ContextApi/ContextApi";
 import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const [CartCount, setCartCount] = useCartCount();
-  const [user, setUser] = useInfo()
+  const [user] = useInfo();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -27,13 +27,11 @@ const HomePage = () => {
     setModalText("The modal will be closed after two seconds");
     setConfirmLoading(true);
     setTimeout(() => {
-      console.log("order Placed");
       setOpen(false);
       setConfirmLoading(false);
     }, 1000);
   };
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
   };
   //get products
@@ -48,7 +46,6 @@ const HomePage = () => {
       setProducts(data);
     } catch (error) {
       setLoading(false);
-      console.log(error);
     }
   };
 
@@ -62,31 +59,27 @@ const HomePage = () => {
       const { data } = await axios.get(
         `http://localhost:8080/product/get/${productId}`
       );
-      console.log("productid", productId);
-      // console.log("data",data);
       setProductDetail(data);
-
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   const orders = {
-    userId: user[0].id === undefined ? "" : user[0].id,
+    userId: user.length === 0 ? "" : user[0].id,
     productId: "",
     status: "PENDING",
     timeAndDate: "",
   };
 
   const addToCard = async () => {
-
     if (user.length === 0) {
-      toast.error('Please Log in to add items in Cart')
-      navigate('/login')
+      toast.error("Please Log in to add items in Cart");
+      navigate("/login");
     }
-    console.log("orders", orders);
-    console.log("pdetail", ProductDetail);
-    const { data } = await axios
-      .post(`http://localhost:8080/order/add`,
+
+    await axios
+      .post(
+        `http://localhost:8080/order/add`,
         {
           ...orders,
           productId: ProductDetail.id,
@@ -95,7 +88,8 @@ const HomePage = () => {
           headers: {
             Authorization: `Bearer ${user[1]}`,
           },
-        })
+        }
+      )
       .then((res) => {
         if (res.status === 200) {
           setCartCount(CartCount + 1);
@@ -106,13 +100,12 @@ const HomePage = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
   useEffect(() => {
     getProduct();
   }, [CartCount]);
-
 
   return (
     <Layout title={"BlinkCart- Shop Now"}>
@@ -133,10 +126,32 @@ const HomePage = () => {
                     style={{ height: "280px" }}
                   />
                   <div className="card-body text-center px-2">
-                    <h5 style={{ color: "#878787" }} className="card-title"><b>{p.name}</b></h5>
-                    <div><b>
-                      <p style={{ float: "left", color: "black", fontSize: "16px" }} className="card-text">₹ {p.price}</p>
-                      <p style={{ color: "#388e3c", float: "right", fontSize: "16px" }} className="card-text">{p.discount}% off</p></b>
+                    <h5 style={{ color: "#878787" }} className="card-title">
+                      <b>{p.name}</b>
+                    </h5>
+                    <div>
+                      <b>
+                        <p
+                          style={{
+                            float: "left",
+                            color: "black",
+                            fontSize: "16px",
+                          }}
+                          className="card-text"
+                        >
+                          ₹ {p.price}
+                        </p>
+                        <p
+                          style={{
+                            color: "#388e3c",
+                            float: "right",
+                            fontSize: "16px",
+                          }}
+                          className="card-text"
+                        >
+                          {p.discount}% off
+                        </p>
+                      </b>
                     </div>
 
                     <Modal
@@ -159,9 +174,31 @@ const HomePage = () => {
                         <div className="col-md-6">
                           <div className="d-flex flex-column justify-content-between h-100 p-3">
                             <div>
-                              <h2 style={{ color: "#2874f0" }}>{ProductDetail.name}</h2>
-                              <p style={{ fontSize: "15px", marginBottom: "-8px" }}>special price</p>
-                              <b><p style={{ color: "black", fontSize: "30px" }}>&#x20B9; {ProductDetail.price} <span style={{ color: "#388e3c", fontSize: "18px", marginLeft: "15px" }}>{ProductDetail.discount}% off</span></p></b>
+                              <h2 style={{ color: "#2874f0" }}>
+                                {ProductDetail.name}
+                              </h2>
+                              <p
+                                style={{
+                                  fontSize: "15px",
+                                  marginBottom: "-8px",
+                                }}
+                              >
+                                special price
+                              </p>
+                              <b>
+                                <p style={{ color: "black", fontSize: "30px" }}>
+                                  &#x20B9; {ProductDetail.price}{" "}
+                                  <span
+                                    style={{
+                                      color: "#388e3c",
+                                      fontSize: "18px",
+                                      marginLeft: "15px",
+                                    }}
+                                  >
+                                    {ProductDetail.discount}% off
+                                  </span>
+                                </p>
+                              </b>
                               <p>Category : {ProductDetail?.category}</p>
                               <h6>{ProductDetail.description}</h6>
                               <button

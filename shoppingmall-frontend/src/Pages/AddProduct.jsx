@@ -1,11 +1,11 @@
 import Layout from "../Layout/Layout";
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useInfo } from "../ContextApi/ContextApi";
 import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
-  const [user,setUser]=useInfo()
+  const [user, setUser] = useInfo();
   const navigate = useNavigate();
 
   const [productData, setProductData] = useState({
@@ -14,7 +14,7 @@ const AddProduct = () => {
     price: "",
     description: "",
     image: null,
-    discount: ""
+    discount: "",
   });
 
   const handleInputChange = (e) => {
@@ -34,23 +34,17 @@ const AddProduct = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("Product details saved Successfully!", productData);
-
     if (
       (productData.name === "") |
       (productData.price === "") |
       (productData.image === null) |
       (productData.description === "") |
       (productData.discount === "")
-    ) 
-    {
+    ) {
       toast.error("Please fill all fields");
-    } 
-    else if (productData.category === "") 
-    {
+    } else if (productData.category === "") {
       toast.error("Please Select Category");
-    } 
-    else {
+    } else {
       const formData = new FormData();
       formData.append("name", productData.name);
       formData.append("category", productData.category);
@@ -58,18 +52,19 @@ const AddProduct = () => {
       formData.append("image", productData.image);
       formData.append("description", productData.description);
       formData.append("discount", productData.discount);
-      const response = await axios
+      await axios
         .post("http://localhost:8080/product/addproduct", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${user[1]}`,
+            Authorization: `Bearer ${user[1]}`,
           },
         })
         .then((res) => {
           if (res.status === 200) toast.success("Product Added");
-          navigate('/product')
+          navigate("/product");
         })
-        .catch((err) => {
+        .catch(() => {
+          console.error();
           toast.error("Error in adding product");
         });
     }

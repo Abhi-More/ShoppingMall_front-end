@@ -1,13 +1,15 @@
 import Layout from "../Layout/Layout";
-import React, { useState } from "react";
+import { useState } from "react";
+import { useInfo } from "../ContextApi/ContextApi";
 
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useInfo } from "../ContextApi/ContextApi";
 import { useNavigate } from "react-router-dom";
 const AddEmployee = () => {
-  const [user,setUser]=useInfo()
   const navigate = useNavigate();
+  const [user, setUser] = useInfo([]);
+  const userId = user[0].id;
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -38,20 +40,25 @@ const AddEmployee = () => {
     ) {
       toast.error("Please fill all fields!");
     } else {
-      const response = await axios
-        .post("http://localhost:8080/employee", formData,
-        {
-          headers: {
-            Authorization: `Bearer ${user[1]}`,
+      await axios
+        .post(
+          "http://localhost:8080/employee",
+          {
+            headers: {
+              Authorization: `Bearer ${user[1]}`,
+            },
+
+            withCredentials: false,
           },
-        })
+          formData
+        )
         .then((res) => {
           if (res.status === 201) {
             toast.success("Employee Added");
-            navigate('/employee')
+            navigate("/employee");
           }
         })
-        .catch((error) => {
+        .catch(() => {
           toast.error("Try using different email");
         });
     }
@@ -61,9 +68,15 @@ const AddEmployee = () => {
     <Layout title={"Add Employee"}>
       <div
         className="container mt-5 py-3"
-        style={{ width: "850px", padding: "0px 50px", background: "rgb(234 234 234)"}}
+        style={{
+          width: "850px",
+          padding: "0px 50px",
+          background: "rgb(234 234 234)",
+        }}
       >
-        <h3 className="mb-3" style={{ textAlign: "center" }}>Fill Employee Details</h3>
+        <h3 className="mb-3" style={{ textAlign: "center" }}>
+          Fill Employee Details
+        </h3>
         <div className="mb-3">
           <input
             type="text"

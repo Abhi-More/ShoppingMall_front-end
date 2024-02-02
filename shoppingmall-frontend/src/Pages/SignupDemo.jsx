@@ -1,9 +1,9 @@
 import "../assets/css/login1.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SigninPic from "../assets/images/signin-image.jpg";
 import toast from "react-hot-toast";
-import axios from 'axios'
+import axios from "axios";
 const SignupDemo = () => {
   const [username, setusername] = useState("");
   const [email, setemail] = useState("");
@@ -14,8 +14,7 @@ const SignupDemo = () => {
   const [gender, setGender] = useState("Gender");
   const navigate = useNavigate();
 
-  const signupMe = (e) => {
-    e.preventDefault()
+  const signupMe = () => {
     let isvalid = false;
     if (
       (username === "") | (email === "") ||
@@ -24,20 +23,16 @@ const SignupDemo = () => {
       toast.error("Please fill all fields!");
     } else {
       if (password !== retypepass) {
-
         toast.error("Password does not match Retype Password!");
         isvalid = false;
       } else {
-
-        // let data = JSON.stringify({ username, email, password });
-        let data = axios.post('http://localhost:8080/auth/register', {
+        axios.post("http://localhost:8080/auth/register", {
           name: username,
           email: email,
           password: password,
           gender: gender,
-          roles: "USER"
-        })
-        console.log(data);
+          roles: "USER",
+        });
         isvalid = true;
       }
     }
@@ -46,7 +41,6 @@ const SignupDemo = () => {
       navigate("/login");
     }
   };
-
 
   return (
     <div>
@@ -57,11 +51,6 @@ const SignupDemo = () => {
               <div className="signup-form">
                 <h2 className="form-title">Sign up</h2>
 
-                {/* <form
-                  method="POST"
-                  className="register-form"
-                  id="register-form"
-                > */}
                 <div className="dropdown mb-3">
                   <div
                     className="dropdown-menu"
@@ -148,8 +137,9 @@ const SignupDemo = () => {
                 </div>
                 <div className="btn-group">
                   <button
-                    className={`btn-sm dropdown-toggle btn btn-light ms-1 btn-outline-dark m-1 ${isGenderSelected ? "selected" : "not-selected"
-                      }`}
+                    className={`btn-sm dropdown-toggle btn btn-light ms-1 btn-outline-dark m-1 ${
+                      isGenderSelected ? "selected" : "not-selected"
+                    }`}
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
@@ -205,13 +195,12 @@ const SignupDemo = () => {
                     defaultValue="Register"
                   />
                 </div>
-                {/* </form> */}
               </div>
               <div className="signup-image">
                 <figure>
                   <img src={SigninPic} alt="sing up image" />
                 </figure>
-                <a href="/" className="signup-image-link">
+                <a href="/login" className="signup-image-link">
                   I am already member
                 </a>
               </div>

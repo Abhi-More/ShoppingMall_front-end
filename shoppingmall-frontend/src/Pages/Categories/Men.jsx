@@ -9,7 +9,7 @@ import { Modal } from "antd";
 import { useInfo } from "../../ContextApi/ContextApi";
 const Men = () => {
   const [CartCount, setCartCount] = useCartCount();
-  const [user,setUser]=useInfo()
+  const [user, setUser] = useInfo();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -19,7 +19,6 @@ const Men = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState("Content of the modal");
   const showModal = (productId) => {
-    console.log(productId);
     setSelectedProduct(productId);
     setOpen(true);
     getProduct(productId);
@@ -33,7 +32,6 @@ const Men = () => {
     }, 1000);
   };
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
   };
   //get products
@@ -45,19 +43,16 @@ const Men = () => {
         { withCredentials: false }
       );
       setLoading(false);
-      // console.log(data);
       setProducts(data);
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
     getAllProducts();
   }, []);
-
- 
 
   //get product
   const getProduct = async (productId) => {
@@ -66,11 +61,9 @@ const Men = () => {
         `http://localhost:8080/product/get/${productId}`
       );
 
-      console.log(data);
       setProductDetail(data);
-      // setProduct(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   const orders = {
@@ -80,15 +73,19 @@ const Men = () => {
     timeAndDate: "",
   };
   const atTocart = async () => {
-    const { data } = await axios
-      .post(`http://localhost:8080/order/add`, {
-        ...orders,
-        productId: ProductDetail.id,
-      },{
-        headers: {
-          Authorization: `Bearer ${user[1]}`,
+    await axios
+      .post(
+        `http://localhost:8080/order/add`,
+        {
+          ...orders,
+          productId: ProductDetail.id,
         },
-      })
+        {
+          headers: {
+            Authorization: `Bearer ${user[1]}`,
+          },
+        }
+      )
       .then((res) => {
         if (res.status === 200) {
           setCartCount(CartCount + 1);
@@ -99,7 +96,7 @@ const Men = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
   useEffect(() => {
@@ -117,8 +114,10 @@ const Men = () => {
           {products?.map((p) => {
             return (
               <>
-                <div className="card m-4 p-3"
-                  style={{ width: "16rem", height: "24rem" }}>
+                <div
+                  className="card m-4 p-3"
+                  style={{ width: "16rem", height: "24rem" }}
+                >
                   <img
                     src={`http://localhost:8080/product/${p.id}/image`}
                     className="card-img-top"
@@ -127,10 +126,32 @@ const Men = () => {
                     style={{ height: "280px" }}
                   />
                   <div className="card-body text-center px-2">
-                    <h5 style={{color:"#878787"}} className="card-title"><b>{p.name}</b></h5>
-                    <div><b>
-                      <p style={{float:"left", color: "black", fontSize:"16px"}} className="card-text">₹ {p.price}</p>
-                      <p style={{color: "#388e3c", float:"right", fontSize:"16px"}} className="card-text">{p.discount}% off</p></b>
+                    <h5 style={{ color: "#878787" }} className="card-title">
+                      <b>{p.name}</b>
+                    </h5>
+                    <div>
+                      <b>
+                        <p
+                          style={{
+                            float: "left",
+                            color: "black",
+                            fontSize: "16px",
+                          }}
+                          className="card-text"
+                        >
+                          ₹ {p.price}
+                        </p>
+                        <p
+                          style={{
+                            color: "#388e3c",
+                            float: "right",
+                            fontSize: "16px",
+                          }}
+                          className="card-text"
+                        >
+                          {p.discount}% off
+                        </p>
+                      </b>
                     </div>
 
                     <Modal
@@ -141,23 +162,43 @@ const Men = () => {
                       onCancel={handleCancel}
                       width={1000}
                     >
-                     
-
                       <div className="row container mt-3">
                         <div className="col-md-6">
                           <img
                             src={`http://localhost:8080/product/${selectedProduct}/image`}
                             className="img-fluid rounded"
                             alt={selectedProduct}
-                            style={{ height: "300px"}}
+                            style={{ height: "300px" }}
                           />
                         </div>
                         <div className="col-md-6">
                           <div className="d-flex flex-column justify-content-between h-100 p-3">
-                          <div>
-                              <h2 style={{color:"#2874f0"}}>{ProductDetail.name}</h2>
-                              <p style={{fontSize:"15px", marginBottom:"-8px"}}>special price</p>
-                              <b><p style={{color:"black", fontSize:"30px"}}>&#x20B9; {ProductDetail.price} <span style={{color: "#388e3c", fontSize:"18px", marginLeft:"15px"}}>{ProductDetail.discount}% off</span></p></b>
+                            <div>
+                              <h2 style={{ color: "#2874f0" }}>
+                                {ProductDetail.name}
+                              </h2>
+                              <p
+                                style={{
+                                  fontSize: "15px",
+                                  marginBottom: "-8px",
+                                }}
+                              >
+                                special price
+                              </p>
+                              <b>
+                                <p style={{ color: "black", fontSize: "30px" }}>
+                                  &#x20B9; {ProductDetail.price}{" "}
+                                  <span
+                                    style={{
+                                      color: "#388e3c",
+                                      fontSize: "18px",
+                                      marginLeft: "15px",
+                                    }}
+                                  >
+                                    {ProductDetail.discount}% off
+                                  </span>
+                                </p>
+                              </b>
                               <p>Category : {ProductDetail?.category}</p>
                               <h6>{ProductDetail.description}</h6>
                               <button
@@ -171,7 +212,6 @@ const Men = () => {
                           </div>
                         </div>
                       </div>
-                   
                     </Modal>
                   </div>
                 </div>

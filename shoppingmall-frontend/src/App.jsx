@@ -1,8 +1,6 @@
-import { useContext, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
-import AppContext from "./ContextApi/CreateContextApi";
 import ProfilePage from "./Pages/ProfilePage";
 import SignupDemo from "./Pages/SignupDemo";
 import LoginDemo from "./Pages/LoginDemo";
@@ -23,7 +21,6 @@ import AddProduct from "./Pages/AddProduct";
 import UserOrders from "./Pages/UserOrders";
 
 function App() {
-  const userId = useContext(AppContext);
   return (
     <>
       <Router>
